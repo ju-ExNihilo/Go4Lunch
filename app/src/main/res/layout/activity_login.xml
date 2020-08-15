@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_activity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/lunch_portrait_v1"
+    android:fillViewport="true"
+    tools:context=".LoginActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constrainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="20dp">
+
+        <RelativeLayout
+            android:id="@+id/loadingPanel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/grayTransparent"
+            android:gravity="center"
+            android:elevation="4dp"
+            tools:ignore="UnusedAttribute">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/icon_pic"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/login_pic_height"
+            android:contentDescription="@string/go4lunch_icon"
+            android:src="@drawable/go4lunch_ic"
+            android:layout_marginTop="@dimen/login_pic_margin_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_view1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_view1_margin_top"
+            android:gravity="center"
+            android:text="@string/title_login"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_view1_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_view2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_view2_margin_top"
+            android:gravity="center"
+            android:text="@string/subtitle_login"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_view2_size"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SmallSp" />
+
+        <Button
+            android:id="@+id/facebook_button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginStart="@dimen/margin_login_button"
+            android:layout_marginTop="@dimen/button_group_margin_top"
+            android:layout_marginEnd="@dimen/margin_login_button"
+            android:background="@drawable/button_login_facebook"
+            android:drawableStart="@drawable/face"
+            android:drawablePadding="-40dp"
+            android:paddingStart="20dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:text="@string/sign_in_with_facebook"
+            android:textSize="@dimen/button_text_size"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view2"
+            tools:ignore="RtlSymmetry" />
+
+        <Button
+            android:id="@+id/twitter_button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginStart="@dimen/margin_login_button"
+            android:layout_marginTop="@dimen/button_margin_top"
+            android:layout_marginEnd="@dimen/margin_login_button"
+            android:background="@drawable/button_login_twitter"
+            android:drawableStart="@drawable/twitter"
+            android:drawablePadding="-40dp"
+            android:paddingStart="20dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/sign_in_with_twitter"
+            android:textSize="@dimen/button_text_size"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/facebook_button"
+            tools:ignore="RtlSymmetry" />
+
+        <Button
+            android:id="@+id/iden_button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginStart="@dimen/margin_login_button"
+            android:layout_marginTop="@dimen/button_margin_top"
+            android:layout_marginEnd="@dimen/margin_login_button"
+            android:background="@drawable/button_login_iden"
+            android:drawableStart="@drawable/login"
+            android:drawablePadding="-40dp"
+            android:paddingStart="20dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/sign_in_with_iden"
+            android:textSize="@dimen/button_text_size"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/twitter_button"
+            tools:ignore="RtlSymmetry" />
+
+        <Button
+            android:id="@+id/google_button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginStart="@dimen/margin_login_button"
+            android:layout_marginTop="@dimen/button_margin_top"
+            android:layout_marginEnd="@dimen/margin_login_button"
+            android:background="@drawable/button_login_google"
+            android:drawableStart="@drawable/google"
+            android:drawablePadding="-40dp"
+            android:paddingStart="20dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/sign_in_with_google"
+            android:textSize="@dimen/button_text_size"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iden_button"
+            tools:ignore="RtlSymmetry" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

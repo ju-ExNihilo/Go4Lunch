@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Login Activity -->
+    <dimen name="login_pic_height">310dp</dimen>
+    <dimen name="login_pic_margin_top">30dp</dimen>
+    <dimen name="margin_login_button">90dp</dimen>
+    <dimen name="text_view1_margin_top">320dp</dimen>
+    <dimen name="text_view2_margin_top">440dp</dimen>
+    <dimen name="text_view1_size">105sp</dimen>
+    <dimen name="text_view2_size">20sp</dimen>
+    <dimen name="button_height">85dp</dimen>
+    <dimen name="button_group_margin_top">90dp</dimen>
+    <dimen name="button_text_size">20sp</dimen>
+    <dimen name="button_margin_top">15dp</dimen>
+    <!-- Login Activity End -->
+
+    <!-- Login Activity Land -->
+    <dimen name="text_view1_margin_top_land">-35dp</dimen>
+    <dimen name="text_view2_margin_top_land">-15dp</dimen>
+    <dimen name="text_view1_size_land">85sp</dimen>
+    <dimen name="text_view2_size_land">18sp</dimen>
+    <dimen name="button_height_land">75dp</dimen>
+    <dimen name="button_width_land">395dp</dimen>
+    <dimen name="button_text_size_land">20sp</dimen>
+    <dimen name="button_margin_top_land">20dp</dimen>
+    <!-- Login Activity Land End -->
+
+</resources>
