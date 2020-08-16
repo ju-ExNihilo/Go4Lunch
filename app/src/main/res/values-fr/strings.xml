@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Go4Lunch</string>
     <string name="app_no_name" />
@@ -18,5 +17,13 @@
     <string name="error_no_internet">no internet found</string>
     <string name="error_unknown_error">unknown error</string>
     <string name="go4lunch_icon">go4lunch icon</string>
+    <string name="subtitle_login">Find a nice restaurant and invite your co-workers for lunch!</string>
+    <string name="title_login">Go4Lunch</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">search</string>
     <!-- Login Activity End -->
+
+    <string name="go_map">Go to Map View</string>
+    <string name="go_list">Go to List View</string>
 </resources>
