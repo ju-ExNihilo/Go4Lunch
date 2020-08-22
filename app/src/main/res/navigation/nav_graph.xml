@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/nav_graph.xml"
+            app:startDestination="@id/workmatesFragment">
+
+    <fragment android:id="@+id/loginFragment"
+              android:name="fr.julien.go4lunch.login.LoginFragment"
+              tools:layout="@layout/fragment_login"
+              android:label="LoginFragment">
+        <action android:id="@+id/action_loginFragment_to_workmatesFragment"
+                app:destination="@id/workmatesFragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment android:id="@+id/workmatesFragment"
+              android:name="fr.julien.go4lunch.workmates.WorkmatesFragment"
+              android:label=""
+              tools:layout="@layout/fragment_workmates">
+        <argument android:name="query" app:argType="string" android:defaultValue="null"/>
+    </fragment>
+
+    <fragment android:id="@+id/listViewFragment"
+              android:name="fr.julien.go4lunch.listview.ListViewFragment"
+              android:label="fragment_list_view"
+              tools:layout="@layout/fragment_list_view">
+        <action android:id="@+id/action_listViewFragment_to_loginFragment"
+                app:destination="@id/loginFragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment android:id="@+id/mapViewFragment"
+              android:name="fr.julien.go4lunch.mapview.MapViewFragment"
+              android:label="fragment_map_view"
+              tools:layout="@layout/fragment_map_view"/>
+</navigation>

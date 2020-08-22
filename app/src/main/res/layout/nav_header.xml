@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:background="#B2B9E1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+    <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/lunch_portrait_v1" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintVertical_bias="1.0"/>
+    <TextView
+            android:text="Go4Lunch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/textView"
+            android:textColor="#fff"
+            android:textSize="30sp"
+            app:layout_constraintTop_toTopOf="@+id/imageView" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:fontFamily="@font/alfa_slab_one" app:layout_constraintBottom_toTopOf="@+id/header_avatar_pic"
+            android:layout_marginTop="70dp"/>
+    <ImageView
+            android:layout_width="91dp"
+            android:layout_height="68dp" app:srcCompat="@drawable/com_facebook_profile_picture_blank_square"
+            android:id="@+id/header_avatar_pic"
+            android:layout_marginTop="30dp" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" android:layout_marginStart="16dp"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" android:id="@+id/header_avatar_name"
+            app:layout_constraintStart_toEndOf="@+id/header_avatar_pic"
+            app:layout_constraintEnd_toEndOf="@+id/imageView" app:layout_constraintTop_toTopOf="@+id/header_avatar_pic"
+            android:layout_marginStart="8dp" android:layout_marginEnd="8dp" android:textColor="#fff"
+            android:textSize="14sp" android:fontFamily="sans-serif" android:layout_marginTop="10dp"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" android:id="@+id/header_avatar_email"
+            app:layout_constraintStart_toEndOf="@+id/header_avatar_pic"
+            app:layout_constraintTop_toBottomOf="@+id/header_avatar_name"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="5dp"
+            android:layout_marginStart="8dp" android:layout_marginEnd="8dp" android:textColor="#fff"
+            android:textSize="12sp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

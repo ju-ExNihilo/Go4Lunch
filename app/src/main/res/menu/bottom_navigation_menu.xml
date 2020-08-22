@@ -4,7 +4,7 @@
 
 
     <item
-        android:id="@+id/action_go_map"
+        android:id="@+id/mapViewFragment"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_map_24"
         android:title="Map View"
@@ -12,14 +12,14 @@
 
 
     <item
-        android:id="@+id/action_go_list_restaurant"
+        android:id="@+id/listViewFragment"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_view_list_24"
         android:title="List View"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_go_list_users"
+        android:id="@+id/workmatesFragment"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_people_24"
         android:title="Workmates"

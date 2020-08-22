@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/img_project"
+        android:id="@+id/user_pic"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentStart="true"
@@ -14,41 +14,41 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/lbl_task_name"
+        app:layout_constraintEnd_toStartOf="@+id/user_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
-        android:id="@+id/lbl_task_name"
+        android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="17dp"
         android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/img_project"
+        app:layout_constraintStart_toEndOf="@+id/user_pic"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Scarlett " />
 
     <TextView
-        android:id="@+id/lbl_project_name"
+        android:id="@+id/eating_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="3dp"
         android:layout_marginTop="17dp"
         android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/lbl_task_name"
+        app:layout_constraintStart_toEndOf="@+id/user_name"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="is eating french" />
 
     <TextView
-        android:id="@+id/lbl_project_name1"
+        android:id="@+id/restaurant_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="3dp"
         android:layout_marginTop="17dp"
         android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/lbl_project_name"
+        app:layout_constraintStart_toEndOf="@+id/eating_style"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="(Le Zinc)" />
 

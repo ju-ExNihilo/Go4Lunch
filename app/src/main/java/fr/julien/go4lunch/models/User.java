@@ -10,6 +10,11 @@ public class User {
 
     public User() { }
 
+    public User(String uid, String username) {
+        this.uid = uid;
+        this.username = username;
+    }
+
     public User(String uid, String username, @Nullable String urlPicture) {
         this.uid = uid;
         this.username = username;
@@ -26,4 +31,13 @@ public class User {
     public void setUsername(String username) { this.username = username; }
     public void setUid(String uid) { this.uid = uid; }
     public void setUrlPicture(@Nullable String urlPicture) { this.urlPicture = urlPicture; }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid='" + uid + '\'' +
+                ", username='" + username + '\'' +
+                ", urlPicture='" + urlPicture + '\'' +
+                '}';
+    }
 }
