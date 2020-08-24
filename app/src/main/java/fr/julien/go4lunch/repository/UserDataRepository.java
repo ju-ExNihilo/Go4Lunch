@@ -11,13 +11,13 @@ public class UserDataRepository {
 
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private CollectionReference quizRef = firebaseFirestore.collection("users");
-    private OnFirestoreTaskComplete onFirestoreTaskComplete;
+    private Query quizRef = firebaseFirestore.collection("users");
+    private OnRequestTaskComplete onRequestTaskComplete;
 
     public UserDataRepository(){}
 
-    public UserDataRepository(OnFirestoreTaskComplete onFirestoreTaskComplete) {
-        this.onFirestoreTaskComplete = onFirestoreTaskComplete;
+    public UserDataRepository(OnRequestTaskComplete onRequestTaskComplete) {
+        this.onRequestTaskComplete = onRequestTaskComplete;
     }
 
     // --- CREATE ---
@@ -28,12 +28,16 @@ public class UserDataRepository {
 
     // --- GET ---
 
-    public void getUser(String uid){
-        quizRef.document(uid).get().addOnSuccessListener(documentSnapshot -> {
-            if (documentSnapshot.exists()){
-                onFirestoreTaskComplete.userData(documentSnapshot.toObject(User.class));
-            }
-        });
+    public void getSearchUsers(String query){
+        quizRef.whereGreaterThanOrEqualTo("username",query)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()){
+                        onRequestTaskComplete.usersSearchData(task.getResult().toObjects(User.class));
+                    }else {
+                        onRequestTaskComplete.onError(task.getException());
+                    }
+                });
     }
 
     public FirebaseUser getCurentUser(){
@@ -43,16 +47,16 @@ public class UserDataRepository {
     public void getAllUsers(){
         quizRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
-                onFirestoreTaskComplete.usersListData(task.getResult().toObjects(User.class));
+                onRequestTaskComplete.usersListData(task.getResult().toObjects(User.class));
             }else {
-                onFirestoreTaskComplete.onError(task.getException());
+                onRequestTaskComplete.onError(task.getException());
             }
         });
     }
 
-    public interface OnFirestoreTaskComplete{
+    public interface OnRequestTaskComplete {
         void usersListData(List<User> usersListModels);
-        void userData(User userModel);
+        void usersSearchData(List<User> userModel);
         void onError(Exception e);
     }
 

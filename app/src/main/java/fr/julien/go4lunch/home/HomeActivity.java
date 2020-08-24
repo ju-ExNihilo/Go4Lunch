@@ -19,6 +19,7 @@ import androidx.core.view.GravityCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.AuthUI;
@@ -42,45 +43,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(binding.toolbarMain);
         this.configureNavigationView();
         this.configureDrawerLayout();
-        // Get the intent, verify the action and get the query
-        handleIntent(getIntent());
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        setIntent(intent);
-        handleIntent(intent);
-    }
-
-    private void handleIntent(Intent intent) {
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            doMySearch(query);
-        }
-    }
-
-    private void doMySearch(String query) {
-        this.getSearchUser(query);
-    }
-
-    /** Get All Users **/
-    private void getSearchUser(String query){
-        Bundle bundle = new Bundle();
-        bundle.putString("message", query );
-        navController.navigate(R.id.workmatesFragment, bundle);
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        // Assumes current activity is the searchable activity
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false);
-        return true;
-    }
 
     // 2 - Configure Drawer Layout
     private void configureDrawerLayout(){
@@ -133,6 +97,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public static void navigate(FragmentActivity activity) {
         Intent intent = new Intent(activity, HomeActivity.class);
         ActivityCompat.startActivity(activity, intent, null);
+        activity.finish();
     }
 
 }
