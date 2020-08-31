@@ -45,15 +45,9 @@ public class WorkmatesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
         setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         this.configureViewModel();
         this.configureRecyclerView();
         this.getAllUsers();
-        this.setUpNavigation();
     }
 
     @Override
@@ -123,10 +117,6 @@ public class WorkmatesFragment extends Fragment {
         userViewModel.getSearchUser(query).observe(getViewLifecycleOwner(), users -> {
             binding.listUsers.setAdapter(new AdapterUser(users));
         });
-    }
-
-    public void setUpNavigation(){
-        NavigationUI.setupWithNavController(binding.bottomNavigationWorkmates, navController);
     }
 
 }

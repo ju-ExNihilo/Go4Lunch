@@ -51,12 +51,6 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        this.setUpNavigation();
-    }
-
-    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.toolbar_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -97,10 +91,6 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback {
         }
         searchView.setOnQueryTextListener(queryTextListener);
         return super.onOptionsItemSelected(item);
-    }
-
-    public void setUpNavigation(){
-        NavigationUI.setupWithNavController(binding.bottomNavigationMapView, navController);
     }
 
     @Override

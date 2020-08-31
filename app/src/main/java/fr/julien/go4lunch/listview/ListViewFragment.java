@@ -40,11 +40,6 @@ public class ListViewFragment extends Fragment{
         setHasOptionsMenu(true);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        this.setUpNavigation();
-    }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -87,10 +82,6 @@ public class ListViewFragment extends Fragment{
         }
         searchView.setOnQueryTextListener(queryTextListener);
         return super.onOptionsItemSelected(item);
-    }
-
-    public void setUpNavigation(){
-        NavigationUI.setupWithNavController(binding.bottomNavigationListView, navController);
     }
 
 }

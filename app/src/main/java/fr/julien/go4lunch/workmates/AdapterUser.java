@@ -32,8 +32,14 @@ public class AdapterUser extends RecyclerView.Adapter<AdapterUser.UserViewHolder
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         if (users.get(position) != null){
             User user = users.get(position);
+            String urlPicUser;
+            if (user.getUrlPicture() != null){
+                urlPicUser = user.getUrlPicture();
+            }else {
+                urlPicUser = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
+            }
             Glide.with(holder.binding.userPic.getContext())
-                    .load(user.getUrlPicture())
+                    .load(urlPicUser)
                     .apply(RequestOptions.circleCropTransform())
                     .into(holder.binding.userPic);
             holder.binding.userName.setText(user.getUsername());

@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.AuthUI;
@@ -43,6 +44,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(binding.toolbarMain);
         this.configureNavigationView();
         this.configureDrawerLayout();
+        this.setUpBottomNavigation();
     }
 
 
@@ -67,6 +69,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 .load(Injection.provideUserRepository().getCurentUser().getPhotoUrl())
                 .apply(RequestOptions.circleCropTransform())
                 .into(pic);
+    }
+
+    public void setUpBottomNavigation(){
+        NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
     }
 
     @Override
