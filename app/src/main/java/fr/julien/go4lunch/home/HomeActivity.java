@@ -24,18 +24,12 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.material.navigation.NavigationView;
 import fr.julien.go4lunch.MainActivity;
 import fr.julien.go4lunch.R;
-import fr.julien.go4lunch.chatroom.ChatRoomFragmentDirections;
 import fr.julien.go4lunch.databinding.ActivityHomeBinding;
 import fr.julien.go4lunch.factory.ViewModelFactory;
 import fr.julien.go4lunch.injection.Injection;
-import fr.julien.go4lunch.listview.ListViewFragmentDirections;
-import fr.julien.go4lunch.mapview.MapViewFragmentDirections;
-import fr.julien.go4lunch.models.FinalRestaurant;
-import fr.julien.go4lunch.setting.SettingFragmentDirections;
 import fr.julien.go4lunch.utils.Utils;
 import fr.julien.go4lunch.viewmodel.RestaurantsViewModel;
 import fr.julien.go4lunch.viewmodel.UserViewModel;
-import fr.julien.go4lunch.workmates.WorkmatesFragmentDirections;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Utils.OnClickPositiveButtonDialog {
 
@@ -67,7 +61,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
     /** Configuring ViewModel **/
     private void configureRestaurantsViewModel(){
-        ViewModelFactory viewModelFactory = Injection.provideRestaurantViewModelFactory();
+        ViewModelFactory viewModelFactory = Injection.provideRestaurantViewModelFactory(this);
         restaurantsViewModel = new ViewModelProvider(this, viewModelFactory).get(RestaurantsViewModel.class);
     }
 
@@ -104,14 +98,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             if (user.getEatingPlaceId().equals("none")){
                 alertDialog(1);
             }else {
-                navigateToYourLunch(uid, user.getEatingPlaceId());
+                navigateToYourLunch(user.getEatingPlaceId());
             }
 
         });
     }
 
-    public void navigateToYourLunch(String uid, String restaurantId){
-        restaurantsViewModel.getRestaurantById(uid, restaurantId).observe(this, finalRestaurant -> {
+    public void navigateToYourLunch(String restaurantId){
+        restaurantsViewModel.getRestaurantById(restaurantId).observe(this, finalRestaurant -> {
             Bundle bundle = new Bundle();
             bundle.putParcelable("restaurant", finalRestaurant);
             navController.navigate(R.id.detailsFragment, bundle);

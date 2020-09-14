@@ -13,14 +13,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.material.navigation.NavigationView;
+import fr.juju.googlemaplibrary.model.FinalPlace;
 import fr.julien.go4lunch.R;
 import fr.julien.go4lunch.databinding.FragmentWorkmatesBinding;
 import fr.julien.go4lunch.factory.ViewModelFactory;
 import fr.julien.go4lunch.home.HomeActivity;
 import fr.julien.go4lunch.injection.Injection;
-import fr.julien.go4lunch.models.FinalRestaurant;
 import fr.julien.go4lunch.viewmodel.RestaurantsViewModel;
 import fr.julien.go4lunch.viewmodel.UserViewModel;
 
@@ -78,7 +76,7 @@ public class WorkmatesFragment extends Fragment implements AdapterUser.OnWorkmat
     }
     /** Configuring ViewModel **/
     private void configureRestaurantsViewModel(){
-        ViewModelFactory viewModelFactory = Injection.provideRestaurantViewModelFactory();
+        ViewModelFactory viewModelFactory = Injection.provideRestaurantViewModelFactory(getViewLifecycleOwner());
         restaurantsViewModel = new ViewModelProvider(this, viewModelFactory).get(RestaurantsViewModel.class);
     }
 
@@ -97,7 +95,7 @@ public class WorkmatesFragment extends Fragment implements AdapterUser.OnWorkmat
     @Override
     public void onWorkmateItemClicked(String restaurantId) {
 
-        restaurantsViewModel.getRestaurantById(Injection.provideUserRepository().getCurrentUser().getUid(), restaurantId).observe(getViewLifecycleOwner(), finalRestaurant -> {
+        restaurantsViewModel.getRestaurantById( restaurantId).observe(getViewLifecycleOwner(), finalRestaurant -> {
             if (finalRestaurant != null){
                 Log.i("DEBUGGGG", "From Firestore ");
                 navController.navigate(R.id.detailsFragment, restaurantBundle(finalRestaurant));
@@ -110,9 +108,9 @@ public class WorkmatesFragment extends Fragment implements AdapterUser.OnWorkmat
         });
     }
 
-    private Bundle restaurantBundle(FinalRestaurant finalRestaurant){
+    private Bundle restaurantBundle(FinalPlace finalPlace){
         Bundle bundle = new Bundle();
-        bundle.putParcelable("restaurant", finalRestaurant);
+        bundle.putParcelable("restaurant", finalPlace);
         return bundle;
     }
 

@@ -4,7 +4,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,12 +14,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import fr.juju.googlemaplibrary.model.FinalPlace;
 import fr.julien.go4lunch.R;
 import fr.julien.go4lunch.databinding.FragmentListViewBinding;
 import fr.julien.go4lunch.factory.ViewModelFactory;
 import fr.julien.go4lunch.home.HomeActivity;
 import fr.julien.go4lunch.injection.Injection;
-import fr.julien.go4lunch.models.FinalRestaurant;
 import fr.julien.go4lunch.utils.Utils;
 import fr.julien.go4lunch.viewmodel.RestaurantsViewModel;
 import fr.julien.go4lunch.viewmodel.UserViewModel;
@@ -67,7 +66,7 @@ public class ListViewFragment extends Fragment implements AdapterRestaurant.OnRe
 
     /** Configuring ViewModel **/
     private void configureRestaurantsViewModel(){
-        ViewModelFactory viewModelFactory = Injection.provideRestaurantViewModelFactory();
+        ViewModelFactory viewModelFactory = Injection.provideRestaurantViewModelFactory(getViewLifecycleOwner());
         restaurantsViewModel = new ViewModelProvider(this, viewModelFactory).get(RestaurantsViewModel.class);
     }
 
@@ -91,9 +90,9 @@ public class ListViewFragment extends Fragment implements AdapterRestaurant.OnRe
         restaurantsViewModel.getRestaurants().observe(getViewLifecycleOwner(), this::setAdapter);
     }
 
-    private void setAdapter(List<FinalRestaurant> finalRestaurantList){
-        if (finalRestaurantList != null){
-            binding.listRestaurants.setAdapter(new AdapterRestaurant(this, finalRestaurantList));
+    private void setAdapter(List<FinalPlace> finalPlaceList){
+        if (finalPlaceList != null){
+            binding.listRestaurants.setAdapter(new AdapterRestaurant(this, finalPlaceList));
         }else {
             alertDialog("No Match","Sorry we no found any place",2);
         }
@@ -107,7 +106,7 @@ public class ListViewFragment extends Fragment implements AdapterRestaurant.OnRe
     }
 
     @Override
-    public void onClickedRestaurant(FinalRestaurant restaurant) {
+    public void onClickedRestaurant(FinalPlace restaurant) {
         Bundle bundle = new Bundle();
         bundle.putParcelable("restaurant", restaurant);
         navController.navigate(R.id.detailsFragment, bundle);
@@ -133,7 +132,7 @@ public class ListViewFragment extends Fragment implements AdapterRestaurant.OnRe
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     userViewModel.getCurrentUserData().observe(getViewLifecycleOwner(), user -> {
-                        restaurantsViewModel.getPlaceFromSearch(query, user.getLatitude()+","+user.getLongitude(), user.getRadius(), getViewLifecycleOwner())
+                        restaurantsViewModel.getPlaceFromSearch(query, user.getLatitude()+","+user.getLongitude(), user.getRadius())
                                 .observe(getViewLifecycleOwner(), finalRestaurants -> setAdapter(finalRestaurants));
                     });
                     return true;

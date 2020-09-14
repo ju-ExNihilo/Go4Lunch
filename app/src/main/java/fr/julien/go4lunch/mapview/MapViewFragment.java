@@ -23,12 +23,12 @@ import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import fr.juju.googlemaplibrary.model.FinalPlace;
 import fr.julien.go4lunch.R;
 import fr.julien.go4lunch.databinding.FragmentMapViewBinding;
 import fr.julien.go4lunch.factory.ViewModelFactory;
 import fr.julien.go4lunch.home.HomeActivity;
 import fr.julien.go4lunch.injection.Injection;
-import fr.julien.go4lunch.models.FinalRestaurant;
 import fr.julien.go4lunch.networking.ConnexionInternet;
 import fr.julien.go4lunch.utils.Utils;
 import fr.julien.go4lunch.viewmodel.RestaurantsViewModel;
@@ -114,7 +114,7 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnInfoWindowC
                     radius = user.getRadius();
                     Log.i("DEBUGGG", location);
 
-                    restaurantsViewModel.getMyRestaurants(location, radius, user.getLongitude(), user.getLatitude(), distance, getViewLifecycleOwner())
+                    restaurantsViewModel.getMyRestaurants(location, radius, user.getLongitude(), user.getLatitude(), distance)
                             .observe(getViewLifecycleOwner(), finalRestaurants -> {
                                 if (finalRestaurants == null){
                                     updateLocationDialog();
@@ -138,7 +138,7 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnInfoWindowC
 
     /** Configuring ViewModel **/
     private void configureRestaurantsViewModel(){
-        ViewModelFactory viewModelFactory = Injection.provideRestaurantViewModelFactory();
+        ViewModelFactory viewModelFactory = Injection.provideRestaurantViewModelFactory(getViewLifecycleOwner());
         restaurantsViewModel = new ViewModelProvider(this, viewModelFactory).get(RestaurantsViewModel.class);
 
     }
@@ -153,28 +153,28 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnInfoWindowC
     }
 
     /** Get Restaurants from Firestore and add Marker **/
-    private void setMarkerOnMap(List<FinalRestaurant> finalRestaurants){
-        if (finalRestaurants != null){
+    private void setMarkerOnMap(List<FinalPlace> finalPlaces){
+        if (finalPlaces != null){
             this.addMarkerToMyPosition();
-            for (FinalRestaurant finalRestaurant : finalRestaurants) {
+            for (FinalPlace finalPlace : finalPlaces) {
                 String openingHours = "Opening hours dont set";
                 int drawableId;
-                if (finalRestaurant.getOpeningHours() != null) {
-                    openingHours = finalRestaurant.getOpeningHours().get(Utils.getIndexOfToday());
+                if (finalPlace.getOpeningHours() != null) {
+                    openingHours = finalPlace.getOpeningHours().get(Utils.getIndexOfToday());
                 }
-                if (finalRestaurant.getNbrCustomer() == 0) {
+                if (finalPlace.getNbrCustomer() == 0) {
                     drawableId = R.drawable.baseline_place_unbook_24;
                 } else {
                     drawableId = R.drawable.baseline_place_booked_24;
                 }
 
-                LatLng latLngRestaurant = new LatLng(finalRestaurant.getLatitude(), finalRestaurant.getLongitude());
+                LatLng latLngRestaurant = new LatLng(finalPlace.getLatitude(), finalPlace.getLongitude());
                 Marker marker = mMap.addMarker(new MarkerOptions()
                         .position(latLngRestaurant)
-                        .title(finalRestaurant.getName())
+                        .title(finalPlace.getName())
                         .snippet(openingHours)
                         .icon(BitmapDescriptorFactory.fromResource(drawableId)));
-                marker.setTag(finalRestaurant.getPlaceId());
+                marker.setTag(finalPlace.getPlaceId());
 
             }
         }else {
@@ -234,7 +234,7 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnInfoWindowC
     @Override
     public void onInfoWindowClick(Marker marker) {
         if (!marker.getTag().equals("myPosition")) {
-            restaurantsViewModel.getRestaurantById(uId, (String) marker.getTag()).observe(getViewLifecycleOwner(),finalRestaurant -> {
+            restaurantsViewModel.getRestaurantById((String) marker.getTag()).observe(getViewLifecycleOwner(),finalRestaurant -> {
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("restaurant", finalRestaurant);
                 navController.navigate(R.id.detailsFragment, bundle);
@@ -262,7 +262,7 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnInfoWindowC
                 public boolean onQueryTextChange(String newText) {return true;}
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    restaurantsViewModel.getPlaceFromSearch(query, location, radius, getViewLifecycleOwner()).observe(getViewLifecycleOwner(), finalRestaurants -> {
+                    restaurantsViewModel.getPlaceFromSearch(query, location, radius).observe(getViewLifecycleOwner(), finalRestaurants -> {
                         setMarkerOnMap(finalRestaurants);
                     });
                     return true;
@@ -307,7 +307,7 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnInfoWindowC
             case 1:
                 try {
                     if (ConnexionInternet.isConnected()){
-                        restaurantsViewModel.updateRestaurants(location, radius, this).observe(getViewLifecycleOwner(), this::setMarkerOnMap);
+                        restaurantsViewModel.updateRestaurants(location, radius).observe(getViewLifecycleOwner(), this::setMarkerOnMap);
                         userViewModel.updateUserLatLn(longitude, latitude);
                     }else {
                         alertDialog("Connexion Required","Please connect your device and click \"Done\"",1);

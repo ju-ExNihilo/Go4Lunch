@@ -3,7 +3,6 @@ package fr.julien.go4lunch.details;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,18 +18,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import fr.juju.googlemaplibrary.model.FinalPlace;
 import fr.julien.go4lunch.R;
 import fr.julien.go4lunch.databinding.FragmentDetailsBinding;
 import fr.julien.go4lunch.factory.ViewModelFactory;
 import fr.julien.go4lunch.home.HomeActivity;
 import fr.julien.go4lunch.injection.Injection;
-import fr.julien.go4lunch.listview.ListViewFragmentArgs;
-import fr.julien.go4lunch.mapview.MapViewFragmentArgs;
-import fr.julien.go4lunch.models.FinalRestaurant;
 import fr.julien.go4lunch.utils.Utils;
-import fr.julien.go4lunch.viewmodel.RestaurantsViewModel;
 import fr.julien.go4lunch.viewmodel.UserViewModel;
 import fr.julien.go4lunch.workmates.AdapterUser;
 
@@ -41,7 +36,7 @@ public class DetailsFragment extends Fragment implements AdapterUser.OnWorkmateI
 
     private FragmentDetailsBinding binding;
     private NavController navController;
-    private FinalRestaurant restaurant;
+    private FinalPlace restaurant;
     private boolean isCustomer = false;
     private UserViewModel userViewModel;
     private String uId;

@@ -22,8 +22,6 @@
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right"/>
 
-        <argument android:name="restaurant"
-                  app:argType="fr.julien.go4lunch.models.FinalRestaurant"/>
     </fragment>
 
     <fragment android:id="@+id/listViewFragment"
@@ -38,8 +36,6 @@
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right"/>
 
-        <argument android:name="restaurant"
-                  app:argType="fr.julien.go4lunch.models.FinalRestaurant"/>
 
     </fragment>
 
@@ -55,8 +51,6 @@
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right"/>
 
-        <argument android:name="restaurant"
-                  app:argType="fr.julien.go4lunch.models.FinalRestaurant"/>
     </fragment>
 
     <fragment android:id="@+id/detailsFragment"
@@ -64,8 +58,6 @@
               android:label="fragment_details"
               tools:layout="@layout/fragment_details">
 
-        <argument android:name="restaurant"
-                  app:argType="fr.julien.go4lunch.models.FinalRestaurant"/>
     </fragment>
 
     <fragment android:id="@+id/chatRoomFragment"
@@ -80,8 +72,6 @@
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right"/>
 
-        <argument android:name="restaurant"
-                  app:argType="fr.julien.go4lunch.models.FinalRestaurant"/>
     </fragment>
 
     <fragment android:id="@+id/settingFragment"
@@ -96,7 +86,5 @@
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right"/>
 
-        <argument android:name="restaurant"
-                  app:argType="fr.julien.go4lunch.models.FinalRestaurant"/>
     </fragment>
 </navigation>

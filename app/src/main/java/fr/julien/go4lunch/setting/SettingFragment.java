@@ -68,7 +68,7 @@ public class SettingFragment extends Fragment implements Utils.OnClickPositiveBu
     }
     /** Configuring ViewModel **/
     private void configureRestaurantsViewModel(){
-        ViewModelFactory viewModelFactory = Injection.provideRestaurantViewModelFactory();
+        ViewModelFactory viewModelFactory = Injection.provideRestaurantViewModelFactory(getViewLifecycleOwner());
         restaurantsViewModel = new ViewModelProvider(this, viewModelFactory).get(RestaurantsViewModel.class);
     }
 
@@ -83,7 +83,7 @@ public class SettingFragment extends Fragment implements Utils.OnClickPositiveBu
     private void updateDataAfterRadiusChange(){
         userViewModel.getCurrentUserData().observe(getViewLifecycleOwner(), user -> {
             String location = user.getLatitude()+","+user.getLongitude();
-            restaurantsViewModel.updateRestaurants(location, user.getRadius(), this);
+            restaurantsViewModel.updateRestaurants(location, user.getRadius());
         });
     }
 
