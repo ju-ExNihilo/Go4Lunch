@@ -1,60 +1,53 @@
 package fr.julien.go4lunch.login;
 
-import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import fr.julien.go4lunch.MainActivity;
 import fr.julien.go4lunch.R;
 import fr.julien.go4lunch.databinding.FragmentLoginBinding;
 import fr.julien.go4lunch.factory.ViewModelFactory;
 import fr.julien.go4lunch.home.HomeActivity;
 import fr.julien.go4lunch.injection.Injection;
 import fr.julien.go4lunch.models.User;
+import fr.julien.go4lunch.networking.ConnexionInternet;
+import fr.julien.go4lunch.utils.Utils;
 import fr.julien.go4lunch.viewmodel.UserViewModel;
 
+import java.io.IOException;
 import java.util.Collections;
-import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment implements Utils.OnClickPositiveButtonDialog {
 
     private FragmentLoginBinding binding;
     private UserViewModel userViewModel;
     private static final int RC_SIGN_IN = 123;
 
-    public LoginFragment() {}
+    public static LoginFragment newInstance() {return new LoginFragment();}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
-        return view;
+        return binding.getRoot();
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         this.configureViewModel();
         this.rooting();
         this.onClickFacebookLoginButton();
@@ -91,19 +84,34 @@ public class LoginFragment extends Fragment {
 
     /** Configuring ViewModel **/
     private void configureViewModel(){
-        ViewModelFactory viewModelFactory = Injection.provideViewModelFactory();
+        ViewModelFactory viewModelFactory = Injection.provideUserViewModelFactory();
         userViewModel = new ViewModelProvider(this, viewModelFactory).get(UserViewModel.class);
     }
 
     /** Rooting **/
     public void rooting(){
         new Handler().postDelayed(() -> {
-            if (FirebaseAuth.getInstance().getCurrentUser() != null){
-                HomeActivity.navigate(this.getActivity());
-            }else {
-                binding.loadingPanel.setVisibility(View.GONE);
+
+            try {
+                if (ConnexionInternet.isConnected()){
+                    if (FirebaseAuth.getInstance().getCurrentUser() != null){
+                        HomeActivity.navigate(this.getActivity());
+                    }else {
+                        binding.loadingPanel.setVisibility(View.GONE);
+                    }
+                }else {
+                    //binding.progressBar.setVisibility(View.GONE);
+                    //binding.connectRequiredText.setVisibility(View.VISIBLE);
+                    Utils utils = new Utils(this);
+                    utils.showAlertDialog(this.getContext(), "Connexion Required","Please connect your device and click \"Done\"",
+                            "Done", "Cancel",
+                            R.drawable.background_alert_dialog, R.drawable.ic_warning_black_24dp, 1);
+                }
+            } catch (InterruptedException | IOException e) {
+                e.printStackTrace();
             }
-        }, 3*1000); // wait for 3 seconds
+
+        }, 2*1000); // wait for 3 seconds
     }
 
     /** Login with Google **/
@@ -142,15 +150,31 @@ public class LoginFragment extends Fragment {
             String username = this.getCurrentUser().getDisplayName();
             String uid = this.getCurrentUser().getUid();
             User userToCreate = new User(uid,username, urlPicture);
-            userViewModel.createUser(userToCreate);
+            userViewModel.getCurrentUserData().observe(getViewLifecycleOwner(), user -> {
+                if (user == null){
+                    userViewModel.createUser(userToCreate);
+                }
+            });
+
         }
     }
 
     /** Get Current User **/
-    private FirebaseUser getCurrentUser(){ return Injection.provideUserRepository().getCurentUser(); }
+    private FirebaseUser getCurrentUser(){ return Injection.provideUserRepository().getCurrentUser(); }
 
     private void showSnackBar(View view, String message){
         Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void positiveButtonDialogClicked(DialogInterface dialog, int dialogIdForSwitch) {
+        this.rooting();
+        dialog.dismiss();
+    }
+
+    @Override
+    public void negativeButtonDialogClicked(DialogInterface dialog, int dialogIdForSwitch) {
+        this.rooting();
+        dialog.dismiss();
+    }
 }

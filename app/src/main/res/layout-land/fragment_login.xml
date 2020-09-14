@@ -76,7 +76,7 @@
                 android:gravity="center_vertical|center_horizontal"
                 android:orientation="vertical">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/facebook_button"
                     android:layout_width="@dimen/button_width_land"
                     android:layout_height="@dimen/button_height_land"
@@ -96,7 +96,7 @@
                     tools:ignore="RtlSymmetry" />
 
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/twitter_button"
                     android:layout_width="@dimen/button_width_land"
                     android:layout_height="@dimen/button_height_land"
@@ -115,7 +115,7 @@
                     android:textColor="@android:color/white"
                     tools:ignore="RtlSymmetry" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/iden_button"
                     android:layout_width="@dimen/button_width_land"
                     android:layout_height="@dimen/button_height_land"
@@ -134,7 +134,7 @@
                     android:textColor="@android:color/white"
                     tools:ignore="RtlSymmetry" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/google_button"
                     android:layout_width="@dimen/button_width_land"
                     android:layout_height="@dimen/button_height_land"

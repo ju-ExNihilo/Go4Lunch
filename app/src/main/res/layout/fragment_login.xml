@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-                                       xmlns:app="http://schemas.android.com/apk/res-auto"
-                                       xmlns:tools="http://schemas.android.com/tools"
-                                       android:id="@+id/login_activity"
-                                       android:layout_width="match_parent"
-                                       android:layout_height="match_parent"
-                                       android:background="@drawable/lunch_portrait_v1"
-                                       android:fillViewport="true"
-                                       tools:context=".MainActivity">
+<androidx.core.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/login_activity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/lunch_portrait_v1"
+        android:fillViewport="true"
+        tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constrainLayout"
@@ -25,9 +26,17 @@
                 tools:ignore="UnusedAttribute">
 
             <ProgressBar
+                    android:id="@+id/progress_bar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:indeterminate="true" />
+
+            <TextView
+                    android:text="Please Connect Your Phone To Internet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/connect_required_text"
+                    android:visibility="gone" android:textColor="@color/colorPrimary"
+                    android:textSize="18sp" android:textAlignment="center"/>
         </RelativeLayout>
 
         <ImageView
@@ -70,7 +79,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="SmallSp" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/facebook_button"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
@@ -92,7 +101,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_view2"
                 tools:ignore="RtlSymmetry" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/twitter_button"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
@@ -114,7 +123,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/facebook_button"
                 tools:ignore="RtlSymmetry" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/iden_button"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
@@ -136,7 +145,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/twitter_button"
                 tools:ignore="RtlSymmetry" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/google_button"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
@@ -157,8 +166,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/iden_button"
                 tools:ignore="RtlSymmetry" />
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

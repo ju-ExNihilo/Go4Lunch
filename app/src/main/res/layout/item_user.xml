@@ -5,51 +5,71 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/user_pic"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/user_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_alert_dialog"
+            android:elevation="5dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="8dp" android:layout_marginEnd="8dp" android:layout_marginTop="3dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <ImageView
+                    android:id="@+id/user_pic"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/user_name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="12dp"/>
 
 
-    <TextView
-        android:id="@+id/user_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="17dp"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/user_pic"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Scarlett " />
+            <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="106dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="24dp"
+                    android:textSize="12sp"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    app:layout_constraintStart_toEndOf="@+id/user_pic"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Scarlett " android:fontFamily="@font/alfa_slab_one"
+                    app:layout_constraintEnd_toStartOf="@+id/eating_place"/>
 
-    <TextView
-        android:id="@+id/eating_style"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="17dp"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/user_name"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="is eating french" />
+            <TextView
+                    android:id="@+id/eating_place"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="26dp"
+                    android:textSize="12sp"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    app:layout_constraintStart_toEndOf="@+id/user_name"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="is eating french" app:layout_constraintEnd_toEndOf="@+id/message_button" android:layout_marginEnd="8dp"/>
+            <ImageButton
+                    android:id="@+id/message_button"
+                    android:layout_width="38dp"
+                    android:layout_height="72dp" app:srcCompat="@drawable/ic_message_black_24dp"
+                    android:background="#00000000" app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/eating_place" app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <TextView
-        android:id="@+id/restaurant_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="17dp"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/eating_style"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="(Le Zinc)" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

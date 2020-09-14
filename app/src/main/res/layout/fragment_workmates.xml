@@ -12,7 +12,6 @@
                     android:id="@+id/list_users"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="?attr/actionBarSize"
                     android:clipToPadding="false"
                     android:paddingBottom="88dp"
                     tools:listitem="@layout/item_user" />

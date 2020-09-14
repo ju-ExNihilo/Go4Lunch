@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_details"
+        tools:context=".home.HomeActivity">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ImageView
+            android:src="@drawable/lunch_portrait_v1"
+            android:layout_width="0dp"
+            android:layout_height="250dp" android:id="@+id/restaurant_details_pic"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:scaleType="fitXY"/>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/restaurant_details_floating_btn"
+            app:srcCompat="@drawable/baseline_restaurant_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="70dp"
+            app:elevation="20dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/restaurant_details_pic"
+            app:layout_constraintBottom_toBottomOf="@+id/cardView" app:backgroundTint="#FFFFFF"
+            android:tint="@null"
+            app:tint="@null"
+            app:rippleColor="@color/colorAccentLight"/>
+
+
+    <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            app:layout_constraintTop_toBottomOf="@+id/restaurant_details_pic" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:cardBackgroundColor="@color/colorPrimary"
+            android:id="@+id/cardView">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/restaurant_details_name"
+                    app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="8dp" android:layout_marginStart="8dp" android:textColor="#FFFFFF"
+                    android:fontFamily="@font/alfa_slab_one"/>
+            <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/restaurant_details_rating"
+                    style="@style/Widget.AppCompat.RatingBar.Small"
+                    android:theme="@style/RatingBar"
+                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toEndOf="@+id/restaurant_details_name"
+                    android:layout_marginTop="11dp" android:layout_marginStart="8dp" android:progress="50"
+                    android:numStars="3"/>
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" android:id="@+id/restaurant_details_address"
+                    app:layout_constraintTop_toBottomOf="@+id/restaurant_details_name" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="8dp" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginStart="8dp" android:layout_marginEnd="8dp" android:textColor="#FFFFFF"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:background="#fff"
+            app:menu="@menu/details_navigation_menu"
+            app:itemIconTint="@drawable/details_navigation_colors"
+            app:itemTextColor="@drawable/details_navigation_colors"
+            app:layout_constraintTop_toBottomOf="@+id/cardView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:id="@+id/restaurant_details_navigation"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/nobody_image"
+            android:visibility="invisible"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            android:src="@drawable/serveur1" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/restaurant_details_navigation"
+            />
+    <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/restaurant_details_navigation"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/item_user"
+            android:id="@+id/restaurant_details_recycler_view" android:layout_marginTop="20dp"/>
+    <TextView
+            android:id="@+id/nobody_text"
+            android:visibility="invisible"
+            android:text="No body register yet"
+            android:layout_width="417dp"
+            android:layout_height="72dp"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:background="#FFFFFF" android:fontFamily="@font/alfa_slab_one" android:textAlignment="center"
+            android:textSize="18sp" app:layout_constraintBottom_toBottomOf="@+id/nobody_image"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

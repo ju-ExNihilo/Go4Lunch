@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".chatroom.ChatRoomFragment">
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlinedTextField_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Message"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/send_btn" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/inbox_recycler_view" android:layout_marginBottom="5dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_text_message"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/inbox_recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            tools:listitem="@layout/message_item"
+            app:layout_constraintBottom_toTopOf="@+id/outlinedTextField_name"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
+            app:layout_constraintHorizontal_bias="0.0"/>
+    <Button
+            android:text="Send"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp" android:id="@+id/send_btn"
+            android:background="@drawable/background_alert_dialog"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/outlinedTextField_name"
+            app:layout_constraintStart_toEndOf="@+id/outlinedTextField_name"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintVertical_bias="0.0" app:layout_constraintTop_toTopOf="@+id/outlinedTextField_name"
+            app:backgroundTint="@null" android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorPrimary" app:elevation="8dp" android:fontFamily="@font/alfa_slab_one"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
