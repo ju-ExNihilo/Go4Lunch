@@ -3,33 +3,31 @@ package fr.julien.go4lunch.listview;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import fr.juju.googlemaplibrary.model.FinalPlace;
 import fr.julien.go4lunch.R;
 import fr.julien.go4lunch.databinding.FragmentListViewBinding;
+import fr.julien.go4lunch.details.DetailsActivity;
 import fr.julien.go4lunch.factory.ViewModelFactory;
-import fr.julien.go4lunch.home.HomeActivity;
 import fr.julien.go4lunch.injection.Injection;
 import fr.julien.go4lunch.utils.Utils;
 import fr.julien.go4lunch.viewmodel.RestaurantsViewModel;
 import fr.julien.go4lunch.viewmodel.UserViewModel;
-
 import java.util.List;
 
-public class ListViewFragment extends Fragment implements AdapterRestaurant.OnRestaurantItemClicked, Utils.OnClickPositiveButtonDialog{
+public class ListViewFragment extends Fragment implements AdapterRestaurant.OnRestaurantItemClicked, Utils.OnClickButtonAlertDialog {
 
     private FragmentListViewBinding binding;
-    private NavController navController;
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
     private RestaurantsViewModel restaurantsViewModel;
@@ -49,20 +47,18 @@ public class ListViewFragment extends Fragment implements AdapterRestaurant.OnRe
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        ((HomeActivity)getActivity()).findViewById(R.id.toolbar_main).setVisibility(View.VISIBLE);
-        ((HomeActivity)getActivity()).findViewById(R.id.bottom_navigation_view).setVisibility(View.VISIBLE);
-        navController = Navigation.findNavController(view);
         setHasOptionsMenu(true);
         this.configureRestaurantsViewModel();
         this.configureUserViewModel();
-
         this.configureRecyclerView();
-        this.getAllRestaurants();
 
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.getAllRestaurants();
+    }
 
     /** Configuring ViewModel **/
     private void configureRestaurantsViewModel(){
@@ -90,6 +86,7 @@ public class ListViewFragment extends Fragment implements AdapterRestaurant.OnRe
         restaurantsViewModel.getRestaurants().observe(getViewLifecycleOwner(), this::setAdapter);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void setAdapter(List<FinalPlace> finalPlaceList){
         if (finalPlaceList != null){
             binding.listRestaurants.setAdapter(new AdapterRestaurant(this, finalPlaceList));
@@ -99,6 +96,7 @@ public class ListViewFragment extends Fragment implements AdapterRestaurant.OnRe
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void alertDialog(String dialogueTitle, String dialogueMessage, int id){
         Utils utils = new Utils(this);
         utils.showAlertDialog(getContext(), dialogueTitle,dialogueMessage,"Done", "Cancel",
@@ -107,9 +105,7 @@ public class ListViewFragment extends Fragment implements AdapterRestaurant.OnRe
 
     @Override
     public void onClickedRestaurant(FinalPlace restaurant) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("restaurant", restaurant);
-        navController.navigate(R.id.detailsFragment, bundle);
+        DetailsActivity.navigate(this.getActivity(), restaurant.getPlaceId());
     }
 
     /** ***************************** **/

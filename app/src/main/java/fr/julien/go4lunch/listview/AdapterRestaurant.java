@@ -55,8 +55,6 @@ public class AdapterRestaurant extends RecyclerView.Adapter<AdapterRestaurant.Re
             holder.binding.restaurantClientNumber.setText("("+ finalPlace.getNbrCustomer()+")");
         }
 
-        Log.i("DEBUGGG", finalPlace.getName() + ": nbrCustomer = " + finalPlace.getNbrCustomer());
-
         holder.binding.restaurantName.setText(finalPlace.getName());
         Glide.with(holder.binding.restaurantPic.getContext())
                 .load(finalPlace.getPhoto())

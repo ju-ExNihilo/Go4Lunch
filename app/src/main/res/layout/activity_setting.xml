@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".setting.SettingActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:paddingBottom="50dp">
+
+
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimary"
+                app:titleTextColor="@color/colorWhite"
+                android:elevation="10dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:id="@+id/pseudo_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="24sp"
+                        android:text="Setting" android:fontFamily="@font/alfa_slab_one"
+                        android:textAlignment="center"
+                        app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginEnd="65dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+
+        <ImageView
+                android:layout_width="0dp"
+                android:layout_height="250dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/setting1" android:id="@+id/imageView3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        />
+        <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                app:layout_constraintTop_toBottomOf="@+id/imageView3" android:layout_marginTop="64dp"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/card_update_name" android:layout_marginStart="8dp" android:layout_marginEnd="8dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:text="Update pseudo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp" android:textColor="@color/colorAccentLight"
+                        android:fontFamily="@font/alfa_slab_one" android:textSize="18sp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                app:layout_constraintTop_toBottomOf="@+id/card_update_name" android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:id="@+id/card_update_scope">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:text="Update search scope"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView3"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" android:fontFamily="@font/alfa_slab_one"
+                        android:textColor="@color/colorAccentLight" android:textSize="18sp"
+                        android:layout_marginStart="8dp" android:layout_marginEnd="8dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                app:layout_constraintTop_toBottomOf="@+id/card_update_scope"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" android:id="@+id/card_update_photo">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:text="Update avatar picture"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView4"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp" android:fontFamily="@font/alfa_slab_one"
+                        android:textColor="@color/colorAccentLight" android:textSize="18sp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                app:layout_constraintTop_toBottomOf="@+id/card_update_photo" android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                android:id="@+id/card_liked_restaurant" android:layout_marginBottom="50dp"
+                app:layout_constraintBottom_toBottomOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:text="My liked restaurants"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView5"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp" android:fontFamily="@font/alfa_slab_one"
+                        android:textColor="@color/colorAccentLight" android:textSize="18sp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

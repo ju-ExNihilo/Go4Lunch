@@ -15,7 +15,9 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import fr.juju.googlemaplibrary.model.FinalPlace;
 import fr.julien.go4lunch.R;
+import fr.julien.go4lunch.chatroom.ChatRoomActivity;
 import fr.julien.go4lunch.databinding.FragmentWorkmatesBinding;
+import fr.julien.go4lunch.details.DetailsActivity;
 import fr.julien.go4lunch.factory.ViewModelFactory;
 import fr.julien.go4lunch.home.HomeActivity;
 import fr.julien.go4lunch.injection.Injection;
@@ -23,12 +25,10 @@ import fr.julien.go4lunch.viewmodel.RestaurantsViewModel;
 import fr.julien.go4lunch.viewmodel.UserViewModel;
 
 
-public class WorkmatesFragment extends Fragment implements AdapterUser.OnWorkmateItemClick{
+public class WorkmatesFragment extends Fragment implements AdapterUser.OnViewClicked {
 
     private FragmentWorkmatesBinding binding;
     private UserViewModel userViewModel;
-    private RestaurantsViewModel restaurantsViewModel;
-    private NavController navController;
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
     private AdapterUser adapterUser;
@@ -45,14 +45,8 @@ public class WorkmatesFragment extends Fragment implements AdapterUser.OnWorkmat
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        ((HomeActivity)getActivity()).findViewById(R.id.toolbar_main).setVisibility(View.VISIBLE);
-        ((HomeActivity)getActivity()).findViewById(R.id.bottom_navigation_view).setVisibility(View.VISIBLE);
-
-        navController = Navigation.findNavController(view);
         setHasOptionsMenu(true);
         this.configureUserViewModel();
-        this.configureRestaurantsViewModel();
         this.configureRecyclerView();
     }
 
@@ -74,11 +68,6 @@ public class WorkmatesFragment extends Fragment implements AdapterUser.OnWorkmat
         userViewModel = new ViewModelProvider(this, viewModelFactory).get(UserViewModel.class);
         userViewModel.init();
     }
-    /** Configuring ViewModel **/
-    private void configureRestaurantsViewModel(){
-        ViewModelFactory viewModelFactory = Injection.provideRestaurantViewModelFactory(getViewLifecycleOwner());
-        restaurantsViewModel = new ViewModelProvider(this, viewModelFactory).get(RestaurantsViewModel.class);
-    }
 
     /** Configuring RecyclerView **/
     private void configureRecyclerView(){
@@ -94,37 +83,16 @@ public class WorkmatesFragment extends Fragment implements AdapterUser.OnWorkmat
 
     @Override
     public void onWorkmateItemClicked(String restaurantId) {
-
-        restaurantsViewModel.getRestaurantById( restaurantId).observe(getViewLifecycleOwner(), finalRestaurant -> {
-            if (finalRestaurant != null){
-                Log.i("DEBUGGGG", "From Firestore ");
-                navController.navigate(R.id.detailsFragment, restaurantBundle(finalRestaurant));
-            }else {
-                Log.i("DEBUGGGG", "From API ");
-                restaurantsViewModel.getPlaceDetailsInfoFromApi(restaurantId).observe(getViewLifecycleOwner(), restaurant -> {
-                    navController.navigate(R.id.detailsFragment, restaurantBundle(restaurant));
-                });
-            }
-        });
-    }
-
-    private Bundle restaurantBundle(FinalPlace finalPlace){
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("restaurant", finalPlace);
-        return bundle;
+        DetailsActivity.navigate(this.getActivity(), restaurantId);
     }
 
     @Override
-    public void onChatButtonClicked(String userId) {
-        Bundle bundle = new Bundle();
-        bundle.putString("userId", userId);
-        navController.navigate(R.id.chatRoomFragment, bundle);
+    public void onChatButtonClicked(String userId, String userName) {
+        ChatRoomActivity.navigate(this.getActivity(),userId, userName);
     }
 
     @Override
-    public void onDataChanged() {
-
-    }
+    public void onDataChanged() {}
 
     /** ***************************** **/
     /** ***** Search view Method **** **/
@@ -146,7 +114,6 @@ public class WorkmatesFragment extends Fragment implements AdapterUser.OnWorkmat
                 public boolean onQueryTextChange(String newText) { return true; }
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    Log.i("DEBUGGGG","onQueryTextSubmit : "+ query);
                     getSearchUsers(query);
                     searchView.clearFocus();
                     return true;
@@ -161,7 +128,6 @@ public class WorkmatesFragment extends Fragment implements AdapterUser.OnWorkmat
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
-                // Not implemented here
                 return false;
             default:
                 break;

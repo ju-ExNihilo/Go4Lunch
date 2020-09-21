@@ -1,5 +1,6 @@
 package fr.julien.go4lunch.repository;
 
+import android.util.Log;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import com.google.android.gms.tasks.Task;
@@ -8,7 +9,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import fr.juju.googlemaplibrary.model.FinalPlace;
 import fr.juju.googlemaplibrary.repository.GooglePlaceRepository;
-
 import java.util.List;
 
 
@@ -125,8 +125,10 @@ public class RestaurantsDataRepository {
             if (finalPlaces != null){
                 for (FinalPlace finalPlace : finalPlaces){
                     createRestaurant(finalPlace);
+                    Log.i("DEBUGGG", finalPlace.getName());
                 }
                 data.setValue(finalPlaces);
+
             }else {
                 data.setValue(null);
             }

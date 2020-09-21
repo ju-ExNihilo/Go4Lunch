@@ -5,7 +5,36 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context=".chatroom.ChatRoomFragment">
+        tools:context=".chatroom.ChatRoomActivity">
+
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:titleTextColor="@color/colorWhite"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" >
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp"
+                android:text="Chat with : "/>
+        <TextView
+                android:id="@+id/pseudo_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="My Pseudo" android:fontFamily="@font/alfa_slab_one"
+                tools:layout_editor_absoluteY="16dp" tools:layout_editor_absoluteX="168dp"/>
+    </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/outlinedTextField_name"
@@ -31,9 +60,9 @@
             tools:listitem="@layout/message_item"
             app:layout_constraintBottom_toTopOf="@+id/outlinedTextField_name"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
-            app:layout_constraintHorizontal_bias="0.0"/>
+            android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintHorizontal_bias="0.0" app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
     <Button
             android:text="Send"
             android:layout_width="wrap_content"

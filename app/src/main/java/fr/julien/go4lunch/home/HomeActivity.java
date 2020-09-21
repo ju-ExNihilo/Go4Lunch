@@ -1,8 +1,9 @@
 package fr.julien.go4lunch.home;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
+import android.icu.util.Calendar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,10 +15,12 @@ import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+import androidx.work.*;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.AuthUI;
@@ -25,18 +28,26 @@ import com.google.android.material.navigation.NavigationView;
 import fr.julien.go4lunch.MainActivity;
 import fr.julien.go4lunch.R;
 import fr.julien.go4lunch.databinding.ActivityHomeBinding;
+import fr.julien.go4lunch.details.DetailsActivity;
 import fr.julien.go4lunch.factory.ViewModelFactory;
 import fr.julien.go4lunch.injection.Injection;
+import fr.julien.go4lunch.setting.SettingActivity;
 import fr.julien.go4lunch.utils.Utils;
 import fr.julien.go4lunch.viewmodel.RestaurantsViewModel;
 import fr.julien.go4lunch.viewmodel.UserViewModel;
+import fr.julien.go4lunch.worker.ClearEatingPlaceWorker;
+import fr.julien.go4lunch.worker.EatingPlaceNotificationWorker;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Utils.OnClickPositiveButtonDialog {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Utils.OnClickButtonAlertDialog {
 
     private ActivityHomeBinding binding;
     private NavController navController;
-    private RestaurantsViewModel restaurantsViewModel;
     private UserViewModel userViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,23 +57,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setContentView(view);
         navController = Navigation.findNavController(this,R.id.nav_host_fragment);
         setSupportActionBar(binding.toolbarMain);
-        this.configureNavigationView();
+        this.configureUserViewModel();
         this.configureDrawerLayout();
         this.setUpBottomNavigation();
-        this.configureRestaurantsViewModel();
-        this.configureUserViewModel();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.configureNavigationView();
+    }
+
 
     /** Configuring ViewModel **/
     private void configureUserViewModel(){
         ViewModelFactory viewModelFactory = Injection.provideUserViewModelFactory();
         userViewModel = new ViewModelProvider(this, viewModelFactory).get(UserViewModel.class);
         userViewModel.init();
-    }
-    /** Configuring ViewModel **/
-    private void configureRestaurantsViewModel(){
-        ViewModelFactory viewModelFactory = Injection.provideRestaurantViewModelFactory(this);
-        restaurantsViewModel = new ViewModelProvider(this, viewModelFactory).get(RestaurantsViewModel.class);
     }
 
     // 2 - Configure Drawer Layout
@@ -80,12 +91,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         TextView email = (TextView) header.findViewById(R.id.header_avatar_email);
         ImageView pic = (ImageView) header.findViewById(R.id.header_avatar_pic);
 
-        name.setText(Injection.provideUserRepository().getCurrentUser().getDisplayName());
-        email.setText(Injection.provideUserRepository().getCurrentUser().getEmail());
-        Glide.with(pic.getContext())
-                .load(Injection.provideUserRepository().getCurrentUser().getPhotoUrl())
-                .apply(RequestOptions.circleCropTransform())
-                .into(pic);
+        userViewModel.getCurrentUserData().observe(this, user -> {
+            name.setText(user.getUsername());
+            email.setText(Injection.provideUserRepository().getCurrentUser().getEmail());
+            Glide.with(pic.getContext())
+                    .load(user.getUrlPicture())
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(pic);
+        });
+
+
     }
 
     public void setUpBottomNavigation(){
@@ -93,22 +108,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void getYourRestaurantId(){
-        String uid = Injection.provideUserRepository().getCurrentUser().getUid();
         userViewModel.getCurrentUserData().observe(this, user -> {
             if (user.getEatingPlaceId().equals("none")){
                 alertDialog(1);
             }else {
-                navigateToYourLunch(user.getEatingPlaceId());
+                DetailsActivity.navigate(this, user.getEatingPlaceId());
             }
-
-        });
-    }
-
-    public void navigateToYourLunch(String restaurantId){
-        restaurantsViewModel.getRestaurantById(restaurantId).observe(this, finalRestaurant -> {
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("restaurant", finalRestaurant);
-            navController.navigate(R.id.detailsFragment, bundle);
         });
     }
 
@@ -129,14 +134,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 getYourRestaurantId();
                 break;
             case R.id.settings:
-                Log.i("DEBUGGG","settings");
-                navController.navigate(R.id.settingFragment);
+                SettingActivity.navigate(this);
                 break;
             case R.id.logout:
                 AuthUI.getInstance()
                         .signOut(this)
                         .addOnSuccessListener(aVoid -> MainActivity.navigate(this));
-                Log.i("DEBUGGG","logout");
                 break;
             default:
                 break;

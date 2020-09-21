@@ -21,17 +21,19 @@ import fr.julien.go4lunch.models.Inbox;
 
 public class InboxAdapter extends FirestoreRecyclerAdapter<Inbox, InboxAdapter.InboxHolder> {
 
+    public interface OnDataChange {void onDataChanged();}
+
     private LinearLayout profileContainer;
     private RelativeLayout rootView;
     private RelativeLayout messageContainer;
-    private String currentUserId;
+    private final String currentUserId;
+    private OnDataChange onDataChange;
 
 
-
-
-    public InboxAdapter(@NonNull FirestoreRecyclerOptions<Inbox> options, String currentUserId) {
+    public InboxAdapter(@NonNull FirestoreRecyclerOptions<Inbox> options, String currentUserId, OnDataChange onDataChange ) {
         super(options);
         this.currentUserId = currentUserId;
+        this.onDataChange = onDataChange;
 
     }
 
@@ -69,7 +71,7 @@ public class InboxAdapter extends FirestoreRecyclerAdapter<Inbox, InboxAdapter.I
     @Override
     public void onDataChanged() {
         super.onDataChanged();
-        Log.i("DEBUGGG", "onDataChange" + getItemCount());
+        onDataChange.onDataChanged();
     }
 
     @NonNull

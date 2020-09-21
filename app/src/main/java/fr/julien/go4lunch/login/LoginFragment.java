@@ -17,6 +17,7 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import fr.julien.go4lunch.MainActivity;
 import fr.julien.go4lunch.R;
 import fr.julien.go4lunch.databinding.FragmentLoginBinding;
 import fr.julien.go4lunch.factory.ViewModelFactory;
@@ -30,11 +31,12 @@ import fr.julien.go4lunch.viewmodel.UserViewModel;
 import java.io.IOException;
 import java.util.Collections;
 
-public class LoginFragment extends Fragment implements Utils.OnClickPositiveButtonDialog {
+public class LoginFragment extends Fragment implements Utils.OnClickButtonAlertDialog {
 
     private FragmentLoginBinding binding;
     private UserViewModel userViewModel;
     private static final int RC_SIGN_IN = 123;
+
 
     public static LoginFragment newInstance() {return new LoginFragment();}
 
@@ -100,18 +102,16 @@ public class LoginFragment extends Fragment implements Utils.OnClickPositiveButt
                         binding.loadingPanel.setVisibility(View.GONE);
                     }
                 }else {
-                    //binding.progressBar.setVisibility(View.GONE);
-                    //binding.connectRequiredText.setVisibility(View.VISIBLE);
                     Utils utils = new Utils(this);
-                    utils.showAlertDialog(this.getContext(), "Connexion Required","Please connect your device and click \"Done\"",
-                            "Done", "Cancel",
-                            R.drawable.background_alert_dialog, R.drawable.ic_warning_black_24dp, 1);
+                    utils.showAlertDialog(this.getContext(), getString(R.string.connexion_required),getString(R.string.please_connect),
+                            getString(R.string.done), getString(R.string.cancel),
+                            R.drawable.background_alert_dialog, R.drawable.ic_warning_black_24dp, MainActivity.ALERT_CONNEXION_DIALOG_ID);
                 }
             } catch (InterruptedException | IOException e) {
                 e.printStackTrace();
             }
 
-        }, 2*1000); // wait for 3 seconds
+        }, 2*1000); // wait for 2 seconds
     }
 
     /** Login with Google **/
@@ -146,7 +146,7 @@ public class LoginFragment extends Fragment implements Utils.OnClickPositiveButt
     /** Create user for FireStore **/
     private void createUserInFireStore(){
         if (this.getCurrentUser() != null){
-            String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
+            String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : getString(R.string.url_default_pic);
             String username = this.getCurrentUser().getDisplayName();
             String uid = this.getCurrentUser().getUid();
             User userToCreate = new User(uid,username, urlPicture);

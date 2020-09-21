@@ -13,78 +13,25 @@
     <fragment android:id="@+id/workmatesFragment"
               android:name="fr.julien.go4lunch.workmates.WorkmatesFragment"
               android:label=""
-              tools:layout="@layout/fragment_workmates">
+              tools:layout="@layout/fragment_workmates"/>
 
-        <action android:id="@+id/action_workmatesFragment_to_detailsFragment"
-                app:destination="@id/detailsFragment"
-                app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left"
-                app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right"/>
-
-    </fragment>
 
     <fragment android:id="@+id/listViewFragment"
               android:name="fr.julien.go4lunch.listview.ListViewFragment"
               android:label="fragment_list_view"
-              tools:layout="@layout/fragment_list_view">
+              tools:layout="@layout/fragment_list_view"/>
 
-        <action android:id="@+id/action_listViewFragment_to_detailsFragment"
-                app:destination="@id/detailsFragment"
-                app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left"
-                app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right"/>
-
-
-    </fragment>
 
     <fragment android:id="@+id/mapViewFragment"
               android:name="fr.julien.go4lunch.mapview.MapViewFragment"
               android:label="fragment_map_view"
-              tools:layout="@layout/fragment_map_view">
+              tools:layout="@layout/fragment_map_view"/>
 
-        <action android:id="@+id/action_mapViewFragment_to_detailsFragment"
-                app:destination="@id/detailsFragment"
-                app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left"
-                app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right"/>
 
-    </fragment>
+    <activity android:id="@+id/detailsActivity" android:name="fr.julien.go4lunch.details.DetailsActivity"
+              android:label="activity_details" tools:layout="@layout/activity_details"/>
+    <activity android:id="@+id/settingActivity" android:name="fr.julien.go4lunch.setting.SettingActivity"
+              android:label="activity_setting" tools:layout="@layout/activity_setting"/>
 
-    <fragment android:id="@+id/detailsFragment"
-              android:name="fr.julien.go4lunch.details.DetailsFragment"
-              android:label="fragment_details"
-              tools:layout="@layout/fragment_details">
 
-    </fragment>
-
-    <fragment android:id="@+id/chatRoomFragment"
-              android:name="fr.julien.go4lunch.chatroom.ChatRoomFragment"
-              android:label="fragment_chat_room"
-              tools:layout="@layout/fragment_chat_room">
-
-        <action android:id="@+id/action_chatRoomFragment_to_detailsFragment"
-                app:destination="@id/detailsFragment"
-                app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left"
-                app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right"/>
-
-    </fragment>
-
-    <fragment android:id="@+id/settingFragment"
-              android:name="fr.julien.go4lunch.setting.SettingFragment"
-              android:label="fragment_setting"
-              tools:layout="@layout/fragment_setting">
-
-        <action android:id="@+id/action_settingFragment_to_detailsFragment"
-                app:destination="@id/detailsFragment"
-                app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left"
-                app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right"/>
-
-    </fragment>
 </navigation>
