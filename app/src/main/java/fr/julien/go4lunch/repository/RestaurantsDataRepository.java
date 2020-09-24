@@ -125,7 +125,6 @@ public class RestaurantsDataRepository {
             if (finalPlaces != null){
                 for (FinalPlace finalPlace : finalPlaces){
                     createRestaurant(finalPlace);
-                    Log.i("DEBUGGG", finalPlace.getName());
                 }
                 data.setValue(finalPlaces);
 

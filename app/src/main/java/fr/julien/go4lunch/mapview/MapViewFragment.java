@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.*;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
@@ -64,12 +65,13 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnInfoWindowC
     private double longitude, latitude;
     private RestaurantsViewModel restaurantsViewModel;
     private UserViewModel userViewModel;
-    private String uId, uName, location;
+    private String uName, location;
     private float[] results = new float[1];
     private int distance, radius;
     private Utils utils;
     private static final String PERMS_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final int RC_LOCATION_PERMS = 100;
+    private boolean isSearching = false;
 
     public MapViewFragment() {}
 
@@ -85,14 +87,25 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnInfoWindowC
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
-        uId = Injection.provideUserRepository().getCurrentUser().getUid();
-        uName = Injection.provideUserRepository().getCurrentUser().getDisplayName();
+        this.configureUserViewModel();
+        this.configureRestaurantsViewModel();
+        uName = userViewModel.getCurrentUser().getDisplayName();
         client = LocationServices.getFusedLocationProviderClient(getActivity());
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         utils = new Utils(this);
-        this.configureUserViewModel();
-        this.configureRestaurantsViewModel();
         binding.focusBtn.setOnClickListener(v -> mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15)));
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (isSearching){
+                    getCurrentUserFromFirestore();
+                    isSearching = false;
+                }else {
+                    getActivity().finish();
+                }
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
     }
 
 
@@ -102,7 +115,6 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnInfoWindowC
         this.getLocationPermissions();
     }
 
-
     /** ***************************** **/
     /** ********* User Data  ******** **/
     /** ***************************** **/
@@ -110,7 +122,6 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnInfoWindowC
     private void configureUserViewModel(){
         ViewModelFactory viewModelFactory = Injection.provideUserViewModelFactory();
         userViewModel = new ViewModelProvider(this, viewModelFactory).get(UserViewModel.class);
-        userViewModel.init();
     }
 
     private void getCurrentUserFromFirestore(){
@@ -144,9 +155,9 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnInfoWindowC
     /** ***** Restaurants Data  ***** **/
     /** ***************************** **/
 
-    /** Configuring ViewModel **/
+    /** Configure restaurant ViewModel **/
     private void configureRestaurantsViewModel(){
-        ViewModelFactory viewModelFactory = Injection.provideRestaurantViewModelFactory(getViewLifecycleOwner());
+        ViewModelFactory viewModelFactory = Injection.provideRestaurantViewModelFactory(getViewLifecycleOwner(), getContext());
         restaurantsViewModel = new ViewModelProvider(this, viewModelFactory).get(RestaurantsViewModel.class);
 
     }
@@ -268,6 +279,8 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnInfoWindowC
                         mMap.clear();
                         setMarkerOnMap(finalRestaurants);
                     });
+                    searchView.clearFocus();
+                    isSearching = true;
                     return true;
                 }
             };

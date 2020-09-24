@@ -1,20 +1,16 @@
 package fr.julien.go4lunch.details;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.icu.util.Calendar;
 import android.net.Uri;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,10 +28,10 @@ import fr.julien.go4lunch.viewmodel.RestaurantsViewModel;
 import fr.julien.go4lunch.viewmodel.UserViewModel;
 import fr.julien.go4lunch.worker.EatingPlaceNotificationWorker;
 import fr.julien.go4lunch.workmates.AdapterUser;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 import java.util.concurrent.TimeUnit;
-
-import static android.Manifest.permission.CALL_PHONE;
 
 public class DetailsActivity extends AppCompatActivity implements AdapterUser.OnViewClicked, Utils.OnClickButtonAlertDialog{
 
@@ -48,6 +44,8 @@ public class DetailsActivity extends AppCompatActivity implements AdapterUser.On
     private String restaurantId;
     private AdapterUser adapterUser;
     public static final String PARCELABLE_RESTAURANT = "PARCELABLE_RESTAURANT";
+    private static final String PERMS_CALL_PHONE = Manifest.permission.CALL_PHONE;
+    private static final int RC_CALL_PHONE_PERMS = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +55,7 @@ public class DetailsActivity extends AppCompatActivity implements AdapterUser.On
         setContentView(view);
         utils = new Utils(this);
         this.configureRestaurantsViewModel();
-        this.configureViewModel();
+        this.configureUserViewModel();
         this.configureToolbar();
         uId = Injection.provideUserRepository().getCurrentUser().getUid();
         Intent intent = getIntent();
@@ -72,10 +70,26 @@ public class DetailsActivity extends AppCompatActivity implements AdapterUser.On
                 }
 
             });
-
         }
     }
 
+    /** Configure restaurant ViewModel **/
+    private void configureRestaurantsViewModel(){
+        ViewModelFactory viewModelFactory = Injection.provideRestaurantViewModelFactory(this, this);
+        restaurantsViewModel = new ViewModelProvider(this, viewModelFactory).get(RestaurantsViewModel.class);
+    }
+
+    /** Configure user ViewModel **/
+    private void configureUserViewModel(){
+        ViewModelFactory viewModelFactory = Injection.provideUserViewModelFactory();
+        userViewModel = new ViewModelProvider(this, viewModelFactory).get(UserViewModel.class);
+    }
+
+    /** ********************************** **/
+    /** ******* Init View Method  ******* **/
+    /** ******************************** **/
+
+    /** initialization view **/
     private void initView(FinalPlace restaurant){
         float rating = (float)(restaurant.getRating()/3.5)*2;
         this.getIfCustomer(restaurant.getPlaceId());
@@ -91,17 +105,32 @@ public class DetailsActivity extends AppCompatActivity implements AdapterUser.On
         binding.restaurantDetailsFloatingBtn.setOnClickListener(v -> this.onClickFloatingActionBtn(restaurant.getName(), restaurant.getPlaceId()));
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        adapterUser.stopListening();
+    private void getIfCustomer(String eatingPlaceId){
+        userViewModel.getCurrentUserData().observe(this, user -> {
+            if (user.getEatingPlaceId() != null){
+                if (user.getEatingPlaceId().equals(eatingPlaceId)){
+                    binding.restaurantDetailsFloatingBtn.setImageResource(R.drawable.ic_check_circle_black_24dp);
+                    isCustomer = true;
+                }
+            }
+        });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        adapterUser.startListening();
+    private void isLikedRestaurant(){
+        userViewModel.getLikedRestaurantById(restaurantId).observe(this, likedRestaurant -> {
+            if (likedRestaurant != null){
+                binding.restaurantDetailsNavigation.getMenu().getItem(1).setIcon(R.drawable.ic_favorite);
+                binding.restaurantDetailsNavigation.getMenu().getItem(1).setTitle(R.string.liked);
+            }else {
+                binding.restaurantDetailsNavigation.getMenu().getItem(1).setIcon(R.drawable.ic_star);
+                binding.restaurantDetailsNavigation.getMenu().getItem(1).setTitle(R.string.like);
+            }
+        });
     }
+
+    /** ********************************** **/
+    /** ******** Toolbar Method  ******** **/
+    /** ******************************** **/
 
     /** For return button **/
     @Override
@@ -119,11 +148,9 @@ public class DetailsActivity extends AppCompatActivity implements AdapterUser.On
         ab.setDisplayHomeAsUpEnabled(true);
     }
 
-    /** Configuring ViewModel **/
-    private void configureRestaurantsViewModel(){
-        ViewModelFactory viewModelFactory = Injection.provideRestaurantViewModelFactory(this);
-        restaurantsViewModel = new ViewModelProvider(this, viewModelFactory).get(RestaurantsViewModel.class);
-    }
+    /** ********************************** **/
+    /** ******** Action Method  ********* **/
+    /** ******************************** **/
 
     private void onClickFloatingActionBtn(String eatingPlaceName, String eatingPlaceId ){
         if (!isCustomer){
@@ -139,43 +166,27 @@ public class DetailsActivity extends AppCompatActivity implements AdapterUser.On
         this.notificationWorker(this);
     }
 
+    /** init worker for notification **/
     private void notificationWorker(Context context){
         userViewModel.getCurrentUserData().observe(this, user -> {
             Data data = new Data.Builder().put(EatingPlaceNotificationWorker.KEY_EATING_PLACE, user.getEatingPlace()).build();
             OneTimeWorkRequest dailyWorkRequest  = new OneTimeWorkRequest.Builder(EatingPlaceNotificationWorker.class)
-                    .setInitialDelay(utils.getMillisecondeUntilAHours(14, 55), TimeUnit.MILLISECONDS)
+                    .setInitialDelay(utils.getMillisecondeUntilAHours(12, 0), TimeUnit.MILLISECONDS)
                     .setInputData(data)
                     .build();
             WorkManager.getInstance(context).enqueueUniqueWork(getString(R.string.notif), ExistingWorkPolicy.REPLACE, dailyWorkRequest) ;
 
         });
     }
+    /** ********************************** **/
+    /** ***** RecyclerView Method  ****** **/
+    /** ******************************** **/
 
-
-    /** Configuring ViewModel **/
-    private void configureViewModel(){
-        ViewModelFactory viewModelFactory = Injection.provideUserViewModelFactory();
-        userViewModel = new ViewModelProvider(this, viewModelFactory).get(UserViewModel.class);
-        userViewModel.init();
-    }
-
-    /** Configuring RecyclerView **/
+    /** Configure RecyclerView **/
     private void configureRecyclerView(String placeId){
         binding.restaurantDetailsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapterUser = new AdapterUser(userViewModel.getCustomer(placeId), true, this);
         binding.restaurantDetailsRecyclerView.setAdapter(adapterUser);
-    }
-
-
-    private void getIfCustomer(String eatingPlaceId){
-        userViewModel.getCurrentUserData().observe(this, user -> {
-            if (user.getEatingPlaceId() != null){
-                if (user.getEatingPlaceId().equals(eatingPlaceId)){
-                    binding.restaurantDetailsFloatingBtn.setImageResource(R.drawable.ic_check_circle_black_24dp);
-                    isCustomer = true;
-                }
-            }
-        });
     }
 
     @Override
@@ -184,6 +195,18 @@ public class DetailsActivity extends AppCompatActivity implements AdapterUser.On
     @Override
     public void onChatButtonClicked(String userId, String userName) {
         ChatRoomActivity.navigate(this,userId, userName);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapterUser.stopListening();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapterUser.startListening();
     }
 
     @Override
@@ -200,15 +223,16 @@ public class DetailsActivity extends AppCompatActivity implements AdapterUser.On
 
     }
 
-
+    /** ********************************** **/
+    /** ***** NavigationBar Method  ***** **/
+    /** ******************************** **/
 
     private void configureBotomNavigationView(){
         binding.restaurantDetailsNavigation.setOnNavigationItemSelectedListener(item -> {
-            Log.i("DEBUGGG", "clicked");
             int id = item.getItemId();
             switch (id){
                 case R.id.call_details:
-                    this.callRestaurant();
+                    this.getCallPermissions();
                     break;
                 case R.id.website_details:
                     this.goToWebSiteRestaurant();
@@ -235,23 +259,19 @@ public class DetailsActivity extends AppCompatActivity implements AdapterUser.On
         });
     }
 
-    private void isLikedRestaurant(){
-        userViewModel.getLikedRestaurantById(restaurantId).observe(this, likedRestaurant -> {
-            if (likedRestaurant != null){
-                binding.restaurantDetailsNavigation.getMenu().getItem(1).setIcon(R.drawable.ic_favorite);
-                binding.restaurantDetailsNavigation.getMenu().getItem(1).setTitle(R.string.liked);
-            }else {
-                binding.restaurantDetailsNavigation.getMenu().getItem(1).setIcon(R.drawable.ic_star);
-                binding.restaurantDetailsNavigation.getMenu().getItem(1).setTitle(R.string.like);
-            }
-        });
+    @AfterPermissionGranted(RC_CALL_PHONE_PERMS)
+    public void getCallPermissions() {
+        if (!EasyPermissions.hasPermissions(this, PERMS_CALL_PHONE)) {
+            EasyPermissions.requestPermissions(this, getString(R.string.popup_title_permission_call), RC_CALL_PHONE_PERMS, PERMS_CALL_PHONE);
+            return;
+        }
+        callRestaurant();
     }
 
-    private void alertDialog(int id, String message){
-
-        utils.showAlertDialog(this, getString(R.string.warning),message,
-                getString(R.string.ok_btn), getString(R.string.cancel_btn),
-                R.drawable.background_alert_dialog, R.drawable.ic_warning_black_24dp, id);
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     private void callRestaurant(){
@@ -260,16 +280,11 @@ public class DetailsActivity extends AppCompatActivity implements AdapterUser.On
                 String tel = restaurant.getPhone().replace(" ", "");
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
                 callIntent.setData(Uri.parse("tel:" + tel));
-                if (ContextCompat.checkSelfPermission(this, CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                    startActivity(callIntent);
-                } else {
-                    requestPermissions(new String[]{CALL_PHONE}, 1);
-                }
+                startActivity(callIntent);
             }else {
                 alertDialog(2, getString(R.string.sorry_no_phone));
             }
         });
-
     }
 
     private void goToWebSiteRestaurant(){
@@ -279,10 +294,18 @@ public class DetailsActivity extends AppCompatActivity implements AdapterUser.On
                 Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( url ) );
                 startActivity(intent);
             }else {
-                alertDialog(1,getString(R.string.soory_no_website));
+                alertDialog(1,getString(R.string.sorry_no_website));
             }
         });
+    }
 
+    /** ********************************* **/
+    /** ***** Alert Dialog Method  ***** **/
+    /** ******************************* **/
+
+    private void alertDialog(int id, String message){
+        utils.showAlertDialog(this, getString(R.string.warning),message,
+                getString(R.string.ok_btn), getString(R.string.cancel_btn),R.drawable.background_alert_dialog, R.drawable.ic_warning_black_24dp, id);
     }
 
     @Override

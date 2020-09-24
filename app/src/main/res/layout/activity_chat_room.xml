@@ -23,7 +23,7 @@
                 android:layout_marginStart="10dp"
                 android:textColor="@color/colorWhite"
                 android:textSize="18sp"
-                android:text="Chat with : "/>
+                android:text="@string/chat_with"/>
         <TextView
                 android:id="@+id/pseudo_name"
                 android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
                 android:textSize="18sp"
                 android:ellipsize="end"
                 android:lines="1"
-                android:text="My Pseudo" android:fontFamily="@font/alfa_slab_one"
+                android:fontFamily="@font/alfa_slab_one"
                 tools:layout_editor_absoluteY="16dp" tools:layout_editor_absoluteX="168dp"/>
     </androidx.appcompat.widget.Toolbar>
 
@@ -40,7 +40,7 @@
             android:id="@+id/outlinedTextField_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Message"
+            android:hint="@string/message"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"
@@ -64,9 +64,10 @@
             android:layout_marginBottom="8dp"
             app:layout_constraintHorizontal_bias="0.0" app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
     <Button
-            android:text="Send"
+            android:id="@+id/send_btn"
+            android:text="@string/send"
             android:layout_width="wrap_content"
-            android:layout_height="0dp" android:id="@+id/send_btn"
+            android:layout_height="0dp"
             android:background="@drawable/background_alert_dialog"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/outlinedTextField_name"

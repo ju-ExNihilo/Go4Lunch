@@ -2,7 +2,6 @@ package fr.julien.go4lunch.viewmodel;
 
 import androidx.lifecycle.ViewModel;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.auth.FirebaseUser;
 import fr.julien.go4lunch.models.Inbox;
 import fr.julien.go4lunch.repository.InboxRepository;
 
@@ -18,8 +17,11 @@ public class InboxViewModel extends ViewModel {
         return inboxRepository.getPrivateChatRoomMessage(from, to);
     }
 
+    /** GET **/
     public String getCurrentUserId(){return inboxRepository.getCurrentUserId();}
+
     public String getCurrentUserUrlPic(){return inboxRepository.getCurrentUserUrlPic();}
 
+    /** INSERT **/
     public void  newMessage(Inbox newMessage){inboxRepository. newMessage(newMessage);}
 }

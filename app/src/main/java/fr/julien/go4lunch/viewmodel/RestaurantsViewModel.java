@@ -15,6 +15,7 @@ public class RestaurantsViewModel extends ViewModel {
         this.restaurantsDataRepository = restaurantsDataRepository;
     }
 
+    /** GET **/
     public LiveData<List<FinalPlace>> getRestaurants(){
         return restaurantsDataRepository.getRestaurants();
     }
@@ -33,6 +34,7 @@ public class RestaurantsViewModel extends ViewModel {
         return restaurantsDataRepository.getMyRestaurants(location, radius, longitude, latitude, distance);
     }
 
+    /** UPDATE **/
     public LiveData<List<FinalPlace>> updateRestaurants(String location, int radius){
         return restaurantsDataRepository.updateRestaurants(location, radius);}
 }

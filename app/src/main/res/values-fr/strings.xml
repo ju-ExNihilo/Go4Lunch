@@ -1,29 +1,125 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Go4Lunch</string>
-    <string name="app_no_name" />
+    <string name="app_no_name"/>
     <!-- FACEBOOK PURPOSE -->
     <string name="facebook_application_id" translatable="false">967246723698527</string>
-    <string name="facebook_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">
-        fb967246723698527
-    </string>
-    <!-- FACEBOOK PURPOSE END -->
+    <string name="facebook_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">fb967246723698527</string>
+    <!-- TWITTER PURPOSE -->
+    <string name="twitter_consumer_key" translatable="false">
+        1291640725663297537-EBJzdt3Sm34Wkihwh1LE4NWnOpUS6e</string>
+    <string name="twitter_consumer_secret" translatable="false">
+        maCoJEb7KQ1FtWwqw0LkJAX7b3qfGdeAv1LjhocnfNaRr</string>
+
     <!-- Login Activity -->
-    <string name="sign_in_with_facebook">Sign in with Facebook</string>
-    <string name="sign_in_with_google">Sign in with Google</string>
-    <string name="sign_in_with_twitter">Sign in with Twitter</string>
-    <string name="sign_in_with_iden">Sign in with Login</string>
-    <string name="authentication">authentication success</string>
-    <string name="error_authentication_canceled">authentication canceled</string>
-    <string name="error_no_internet">no internet found</string>
-    <string name="error_unknown_error">unknown error</string>
-    <string name="go4lunch_icon">go4lunch icon</string>
-    <string name="subtitle_login">Find a nice restaurant and invite your co-workers for lunch!</string>
-    <string name="title_login">Go4Lunch</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="search">search</string>
+    <string name="sign_in_with_facebook">Se connecter avec Facebook</string>
+    <string name="sign_in_with_google">Se connecter avec Google</string>
+    <string name="sign_in_with_twitter">Se connecter avec Twitter</string>
+    <string name="sign_in_with_iden">Se connecter avec un Mail</string>
+    <string name="authentication">Authentification réussie</string>
+    <string name="error_authentication_canceled">Authentification annulée</string>
+    <string name="error_no_internet">Pas d\'internet trouvé</string>
+    <string name="error_unknown_error">Erreur inconnue</string>
+    <string name="subtitle_login">Trouvez un bon restaurant et invitez vos collègues à déjeuner!</string>
+    <string name="search">Recherche</string>
+    <string name="url_default_pic">https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png</string>
     <!-- Login Activity End -->
 
+    <!-- Chat room Activity -->
+    <string name="chat_with">Chat avec :</string>
+    <string name="message">Message</string>
+    <string name="send">Envoyer</string>
+    <!-- Chat room Activity End -->
+
+    <!-- Map Activity -->
+    <string name="opening_hours_dont_set">Heure d\'ouverture non définie</string>
+    <!-- Map Activity End -->
+
+    <!-- Setting Activity -->
+    <string name="scope_updated">Votre champ de recherche a été mise à jour.</string>
+    <string name="scope_dont_updated">Votre champ de recherche n’a pas été mis à jour</string>
+    <string name="scope_between">Votre champ de recherche doit être compris entre 2 km et 10 km</string>
+    <string name="picture_updated">Votre photo de profil a été mise à jour.</string>
+    <string name="update_pseudo">Mettre à jour votre pseudo.</string>
+    <string name="enter_pseudo">Entrez votre nouveau pseudo :</string>
+    <string name="save">Sauvegarder</string>
+    <string name="pseudo">Pseudo</string>
+    <string name="update_scope">Mettre à jour votre champ de recherche.</string>
+    <string name="error_scope">Mettez à jour votre champ de recherche en km. Actuel ( %1$d km )</string>
+    <string name="scope">Champ de recherche</string>
+    <string name="your_liked_restaurants">Vos restaurants préférés :</string>
+    <string name="pseudo_updated">Votre pseudo a été mis à jour</string>
+    <string name="pseudo_dont_updated">Votre pseudo n’a pas été mis à jour.</string>
+    <string name="setting">Paramètres</string>
+    <string name="update_pseudo_layout">Mise à jour de votre pseudo.</string>
+    <string name="update_search_scope_layout">Mise à jour du champ de recherche.</string>
+    <string name="update_avatar_picture_layout">Mise à jour de votre avatar.</string>
+    <string name="my_liked_restaurants_layout">Mes restaurants préférés.</string>
+    <!-- Setting Activity End -->
+
+    <!-- List Activity -->
+    <string name="nbr_customer">(%1$d)</string>
+    <!-- List Activity End -->
+
+    <!-- Details Activity -->
+    <string name="liked">AIMÉ</string>
+    <string name="no_body_register_yet">Personne ne s’est encore inscrit</string>
+    <string name="call">APPELER</string>
+    <string name="like">AIMER</string>
+    <string name="website">SITE WEB</string>
+    <!-- Details Activity End -->
+
+    <!-- Easy Permissions -->
+    <string name="popup_title_permission_files_access">Nous avons besoin de votre autorisations pour accéder à votre photo.</string>
+    <string name="popup_title_permission_call">Nous avons besoin de votre permission pour passer un appel téléphonique</string>
+    <string name="popup_title_permission_location_access">Nous avons besoin de votre autorisations pour accéder à votre emplacement actuel.</string>
+    <string name="toast_title_no_image_chosen">Vous n\'avez choisis aucun fichier.</string>
+
+    <!-- Alert Dialog -->
+    <string name="please_connect_your_phone_to_internet">Veuillez connecter votre téléphone à Internet.</string>
+    <string name="connexion_required">Connexion requise</string>
+    <string name="please_connect">Veuillez connecter votre appareil et cliquer sur \"Effectué\"</string>
+    <string name="done">Effectué</string>
+    <string name="cancel">Annuler</string>
+    <string name="no_match">Pas de correspondance</string>
+    <string name="sorry_dont_found_place">Désolé, nous n’avons trouvé aucun restaurant.</string>
+    <string name="sorry_no_phone">Désolé, ce restaurant n’a pas encore ajouté de numéro de téléphone.</string>
+    <string name="sorry_no_website">Désolé, ce restaurant n’a pas encore ajouté de site web.</string>
+    <string name="warning">Attention !</string>
+    <string name="cancel_btn">Annuler</string>
+    <string name="ok_btn">OK</string>
+    <string name="update_location">Mêttre à jour votre emplacement</string>
+    <string name="location_change">Votre emplacement a changé voulez-vous mettre à jour la liste des restaurants ?</string>
+    <string name="agree">Accepter</string>
+    <string name="disagree">Annuler</string>
+    <string name="data_dont_update">Les données n\'ont pas étaient mises à jour</string>
+    <string name="phone_dont_set">Phone non définit</string>
+    <string name="site_sont_set">site non définit</string>
+    <string name="sorry">Désolé !</string>
+    <string name="eating_place_dont_select">Vous n’avez pas encore choisi un endroit pour manger !!</string>
+
+    <!-- Menu -->
+    <string name="map_view">Carte Vue</string>
+    <string name="list_view">Liste Vue</string>
+    <string name="workmates">Collègues</string>
+    <string name="your_lunch">Votre Déjeuner</string>
+    <string name="settings">Paramètres</string>
+    <string name="logout">Déconnexion</string>
+
+    <!-- Notification -->
+    <string name="notification_title">N\'oubliez pas votre repas</string>
+    <string name="notification_message">Aujourd\'hui vous mangez à %1$s</string>
+
+    <!-- Utils -->
+    <string name="notif">notif</string>
+    <string name="none">none</string>
+    <string name="my_position">myPosition</string>
+    <string name="go4lunch_icon">Go4lunch icon</string>
     <string name="go_map">Go to Map View</string>
     <string name="go_list">Go to List View</string>
+    <string name="search_hint">Recherche</string>
+    <string name="navigation_drawer_open">navigation_drawer_open</string>
+    <string name="navigation_drawer_close">navigation_drawer_close</string>
+    <string name="is_joining">mange ici</string>
+    <string name="eating_place">mange à %1$s</string>
+
 </resources>

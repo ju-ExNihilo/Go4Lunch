@@ -61,8 +61,8 @@ public class LoginFragment extends Fragment implements Utils.OnClickButtonAlertD
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        IdpResponse response = IdpResponse.fromResultIntent(data);
         if (requestCode == RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
             this.handleResponseAfterSignIn(response);
         }
     }
@@ -75,16 +75,12 @@ public class LoginFragment extends Fragment implements Utils.OnClickButtonAlertD
             }else {
                 showSnackBar(binding.constrainLayout, getString(R.string.error_unknown_error));
             }
-        } else if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
-            showSnackBar(binding.constrainLayout, getString(R.string.error_no_internet));
-        } else if (response.getError().getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
-            showSnackBar(binding.constrainLayout, getString(R.string.error_unknown_error));
-        }else {
+        } else {
             showSnackBar(binding.constrainLayout, getString(R.string.error_authentication_canceled));
         }
     }
 
-    /** Configuring ViewModel **/
+    /** Configure user ViewModel **/
     private void configureViewModel(){
         ViewModelFactory viewModelFactory = Injection.provideUserViewModelFactory();
         userViewModel = new ViewModelProvider(this, viewModelFactory).get(UserViewModel.class);
@@ -103,8 +99,7 @@ public class LoginFragment extends Fragment implements Utils.OnClickButtonAlertD
                     }
                 }else {
                     Utils utils = new Utils(this);
-                    utils.showAlertDialog(this.getContext(), getString(R.string.connexion_required),getString(R.string.please_connect),
-                            getString(R.string.done), getString(R.string.cancel),
+                    utils.showAlertDialog(this.getContext(), getString(R.string.connexion_required),getString(R.string.please_connect),getString(R.string.done), getString(R.string.cancel),
                             R.drawable.background_alert_dialog, R.drawable.ic_warning_black_24dp, MainActivity.ALERT_CONNEXION_DIALOG_ID);
                 }
             } catch (InterruptedException | IOException e) {
@@ -160,7 +155,7 @@ public class LoginFragment extends Fragment implements Utils.OnClickButtonAlertD
     }
 
     /** Get Current User **/
-    private FirebaseUser getCurrentUser(){ return Injection.provideUserRepository().getCurrentUser(); }
+    private FirebaseUser getCurrentUser(){ return userViewModel.getCurrentUser(); }
 
     private void showSnackBar(View view, String message){
         Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();

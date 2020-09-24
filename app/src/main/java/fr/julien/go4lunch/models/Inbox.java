@@ -52,9 +52,7 @@ public class Inbox {
         this.urlPicFrom = urlPicFrom;
     }
 
-    public Date getDate() {
-        return date;
-    }
+    public Date getDate() { return date;}
 
     public void setDate(Date date) {
         this.date = date;

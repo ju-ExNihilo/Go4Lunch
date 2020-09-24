@@ -3,8 +3,8 @@ package fr.julien.go4lunch.workmates;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.*;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,26 +12,26 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import fr.juju.googlemaplibrary.model.FinalPlace;
 import fr.julien.go4lunch.R;
 import fr.julien.go4lunch.chatroom.ChatRoomActivity;
 import fr.julien.go4lunch.databinding.FragmentWorkmatesBinding;
 import fr.julien.go4lunch.details.DetailsActivity;
 import fr.julien.go4lunch.factory.ViewModelFactory;
-import fr.julien.go4lunch.home.HomeActivity;
 import fr.julien.go4lunch.injection.Injection;
-import fr.julien.go4lunch.viewmodel.RestaurantsViewModel;
 import fr.julien.go4lunch.viewmodel.UserViewModel;
 
 
-public class WorkmatesFragment extends Fragment implements AdapterUser.OnViewClicked {
+public class WorkmatesFragment extends Fragment implements  AdapterUser.OnViewClicked{
 
     private FragmentWorkmatesBinding binding;
     private UserViewModel userViewModel;
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
     private AdapterUser adapterUser;
+    private NavController navController;
+    private boolean isSearching = false;
 
     public WorkmatesFragment() {}
 
@@ -46,8 +46,44 @@ public class WorkmatesFragment extends Fragment implements AdapterUser.OnViewCli
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
+        navController = Navigation.findNavController(view);
         this.configureUserViewModel();
         this.configureRecyclerView();
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+               if (isSearching){
+                   adapterUser.updateOptions(userViewModel.getAllUser());
+                   isSearching = false;
+               }else {
+                   navController.navigateUp();
+               }
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+    }
+
+
+    /** Configure user ViewModel **/
+    private void configureUserViewModel(){
+        ViewModelFactory viewModelFactory = Injection.provideUserViewModelFactory();
+        userViewModel = new ViewModelProvider(this, viewModelFactory).get(UserViewModel.class);
+    }
+
+    /** ***************************** **/
+    /** ***** RecyclerView Method **** **/
+    /** ***************************** **/
+
+    /** Configuring RecyclerView **/
+    private void configureRecyclerView(){
+        binding.listUsers.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        adapterUser = new AdapterUser(userViewModel.getAllUser(), false, this);
+        binding.listUsers.setAdapter(adapterUser);
+    }
+
+    private void getSearchUsers(String query){
+        adapterUser.updateOptions(userViewModel.getSearchUser(query));
+
     }
 
     @Override
@@ -60,25 +96,6 @@ public class WorkmatesFragment extends Fragment implements AdapterUser.OnViewCli
     public void onStop() {
         super.onStop();
         adapterUser.stopListening();
-    }
-
-    /** Configuring ViewModel **/
-    private void configureUserViewModel(){
-        ViewModelFactory viewModelFactory = Injection.provideUserViewModelFactory();
-        userViewModel = new ViewModelProvider(this, viewModelFactory).get(UserViewModel.class);
-        userViewModel.init();
-    }
-
-    /** Configuring RecyclerView **/
-    private void configureRecyclerView(){
-        binding.listUsers.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        adapterUser = new AdapterUser(userViewModel.getAllUser(), false, this);
-        binding.listUsers.setAdapter(adapterUser);
-    }
-
-    private void getSearchUsers(String query){
-        adapterUser.updateOptions(userViewModel.getSearchUser(query));
-
     }
 
     @Override
@@ -116,6 +133,7 @@ public class WorkmatesFragment extends Fragment implements AdapterUser.OnViewCli
                 public boolean onQueryTextSubmit(String query) {
                     getSearchUsers(query);
                     searchView.clearFocus();
+                    isSearching = true;
                     return true;
                 }
             };

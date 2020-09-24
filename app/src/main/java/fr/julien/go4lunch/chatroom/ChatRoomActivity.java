@@ -10,17 +10,13 @@ import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import fr.julien.go4lunch.R;
 import fr.julien.go4lunch.databinding.ActivityChatRoomBinding;
-import fr.julien.go4lunch.databinding.ActivityHomeBinding;
 import fr.julien.go4lunch.factory.ViewModelFactory;
-import fr.julien.go4lunch.home.HomeActivity;
 import fr.julien.go4lunch.injection.Injection;
 import fr.julien.go4lunch.models.Inbox;
 import fr.julien.go4lunch.viewmodel.InboxViewModel;
-
 import java.util.Arrays;
 import java.util.Date;
 
@@ -42,15 +38,14 @@ public class ChatRoomActivity extends AppCompatActivity implements InboxAdapter.
         binding = ActivityChatRoomBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        this.configureViewModel();
         Intent intent = this.getIntent();
         userId = intent.getStringExtra(EXTRA_USER_ID);
         userName = intent.getStringExtra(EXTRA_USER_NAME);
         this.configureToolbar();
+        this.configureViewModel();
         currentUserId = inboxViewModel.getCurrentUserId();
         currentUPicUrl = inboxViewModel.getCurrentUserUrlPic();
         this.configureRecyclerView();
-
 
         binding.sendBtn.setOnClickListener(v -> {
             if (!binding.editTextMessage.getText().toString().isEmpty()){
@@ -81,19 +76,18 @@ public class ChatRoomActivity extends AppCompatActivity implements InboxAdapter.
         ab.setDisplayHomeAsUpEnabled(true);
     }
 
-    /** Configuring ViewModel **/
+    /** Configure ViewModel **/
     private void configureViewModel(){
         ViewModelFactory viewModelFactory = Injection.provideInboxViewModelFactory();
         inboxViewModel = new ViewModelProvider(this, viewModelFactory).get(InboxViewModel.class);
-
     }
 
+    /** Configure RecyclerView **/
     private void configureRecyclerView(){
         binding.inboxRecyclerView.setHasFixedSize(true);
         binding.inboxRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new InboxAdapter(inboxViewModel.getPrivateChatRoomMessage(currentUserId, userId), currentUserId, this);
         binding.inboxRecyclerView.setAdapter(adapter);
-
     }
 
     @Override
@@ -109,16 +103,16 @@ public class ChatRoomActivity extends AppCompatActivity implements InboxAdapter.
         adapter.stopListening();
     }
 
+    @Override
+    public void onDataChanged() {
+        binding.inboxRecyclerView.scrollToPosition(adapter.getItemCount()-1);
+    }
+
     /** Used to navigate to this activity **/
     public static void navigate(FragmentActivity activity, String userId, String userName) {
         Intent intent = new Intent(activity, ChatRoomActivity.class);
         intent.putExtra(EXTRA_USER_ID, userId);
         intent.putExtra(EXTRA_USER_NAME, userName);
         ActivityCompat.startActivity(activity, intent, null);
-    }
-
-    @Override
-    public void onDataChanged() {
-        binding.inboxRecyclerView.scrollToPosition(adapter.getItemCount()-1);
     }
 }

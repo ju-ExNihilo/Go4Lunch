@@ -6,20 +6,20 @@
             android:id="@+id/call_details"
             android:enabled="true"
             android:icon="@drawable/ic_call_black_24dp"
-            android:title="CALL"
+            android:title="@string/call"
             app:showAsAction="ifRoom" />
 
     <item
             android:id="@+id/like_details"
             android:enabled="true"
             android:icon="@drawable/ic_star"
-            android:title="LIKE"
+            android:title="@string/like"
             app:showAsAction="ifRoom" />
 
     <item
             android:id="@+id/website_details"
             android:enabled="true"
             android:icon="@drawable/baseline_public_24"
-            android:title="WEBSITE"
+            android:title="@string/website"
             app:showAsAction="ifRoom" />
 </menu>

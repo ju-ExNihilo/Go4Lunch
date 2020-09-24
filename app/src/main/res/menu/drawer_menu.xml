@@ -5,7 +5,7 @@
             android:id="@+id/your_lunch"
             android:enabled="true"
             android:icon="@drawable/ic_restaurant_menu_black_24dp"
-            android:title="YOUR LUNCH"
+            android:title="@string/your_lunch"
             app:showAsAction="ifRoom" />
 
 
@@ -13,14 +13,14 @@
             android:id="@+id/settings"
             android:enabled="true"
             android:icon="@drawable/ic_settings_black_24dp"
-            android:title="SETTINGS"
+            android:title="@string/settings"
             app:showAsAction="ifRoom" />
 
     <item
             android:id="@+id/logout"
             android:enabled="true"
             android:icon="@drawable/ic_power_settings_new_black_24dp"
-            android:title="LOGOUT"
+            android:title="@string/logout"
             app:showAsAction="ifRoom" />
 
 </menu>

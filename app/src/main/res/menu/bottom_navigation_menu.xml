@@ -7,7 +7,7 @@
         android:id="@+id/mapViewFragment"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_map_24"
-        android:title="Map View"
+        android:title="@string/map_view"
         app:showAsAction="ifRoom" />
 
 
@@ -15,13 +15,13 @@
         android:id="@+id/listViewFragment"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_view_list_24"
-        android:title="List View"
+        android:title="@string/list_view"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/workmatesFragment"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_people_24"
-        android:title="Workmates"
+        android:title="@string/workmates"
         app:showAsAction="ifRoom" />
 </menu>

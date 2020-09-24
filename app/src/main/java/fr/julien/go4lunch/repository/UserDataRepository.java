@@ -41,6 +41,12 @@ public class UserDataRepository {
        return getUserCollection().document(userToCreate.getUid()).set(userToCreate);
     }
 
+    /** ******** Insert Liked restaurant in firebase  ****** **/
+    public Task<Void> insertLikedRestaurant(LikedRestaurant likedRestaurant) {
+        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        return getUserCollection().document(uId).collection("LikedRestaurants").document(likedRestaurant.getId()).set(likedRestaurant);
+    }
+
     /** ***************************** **/
     /** ******** GET Method  ******** **/
     /** ***************************** **/
@@ -74,18 +80,6 @@ public class UserDataRepository {
                 .build();
     }
 
-    public MutableLiveData<List<User>> getAllUsersLiveData(){
-        MutableLiveData<List<User>> allUser = new MutableLiveData<>();
-        getUserCollection().get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
-                allUser.setValue(task.getResult().toObjects(User.class));
-            }else {
-                allUser.setValue(null);
-            }
-        });
-        return allUser;
-    }
-
     /** ******** Get current user from firestore  ****** **/
     public MutableLiveData<User> getUserFromFirestore(){
         String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -98,26 +92,6 @@ public class UserDataRepository {
             }
         });
         return user;
-    }
-
-    /** ********************************* **/
-    /** ******** UPDATE Method  ******** **/
-    /** ******************************* **/
-
-    /** ******** Update number of customer  ****** **/
-    public void updateNbrCustomer(String placeId, int nbrCustomer){
-        getUserCollection().get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
-                for (User user :task.getResult().toObjects(User.class)){
-                    updateNbrCustomers(user.getUid(), placeId, nbrCustomer);
-                }
-            }
-        });
-    }
-
-    public Task<Void> insertLikedRestaurant(LikedRestaurant likedRestaurant) {
-        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        return getUserCollection().document(uId).collection("LikedRestaurants").document(likedRestaurant.getId()).set(likedRestaurant);
     }
 
     /** ******** Get current user from firestore  ****** **/
@@ -148,36 +122,9 @@ public class UserDataRepository {
         return data;
     }
 
-    private Task<Void> updateNbrCustomers(String uId, String placeId, int nbrCustomer) {
-        return getUserCollection().document(uId).collection("MyResto").document(placeId).update("nbrCustomer", nbrCustomer);
-    }
-    /** **** Delete restaurant in firestore  **** **/
-    public Task<Void> deleteLikedRestaurant(String restaurantId){
-        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        return getUserCollection().document(uId).collection("LikedRestaurants").document(restaurantId).delete();
-    }
-    /** ***************************** **/
-
-    private Task<Void> updateUserPicture(String urlPicture) {
-        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        return getUserCollection().document(uId).update("urlPicture", urlPicture);
-    }
-    public void uploadPhotoInFirebaseAndUpdateUserPicture(Uri uri) {
-        String uuid = UUID.randomUUID().toString();
-        StorageReference mImageRef = FirebaseStorage.getInstance().getReference(uuid);
-        UploadTask uploadTask = mImageRef.putFile(uri);
-        uploadTask.continueWithTask(task -> {
-            if (!task.isSuccessful()) {
-                throw task.getException();
-            }
-            return mImageRef.getDownloadUrl();
-        }).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Uri downloadUri = task.getResult();
-                updateUserPicture(downloadUri.toString());
-            }
-        });
-    }
+    /** ********************************* **/
+    /** ******** UPDATE Method  ******** **/
+    /** ******************************* **/
 
     /** ******** Update LatLn  ****** **/
     private Task<Void> updateLongitude(String uId, double longitude) {
@@ -219,5 +166,38 @@ public class UserDataRepository {
         return getUserCollection().document(uId).update("radius", radius);
     }
 
+    /** **** Update user picture  **** **/
+    private Task<Void> updateUserPicture(String urlPicture) {
+        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        return getUserCollection().document(uId).update("urlPicture", urlPicture);
+    }
+
+    /** **** Upload user picture  **** **/
+    public void uploadPhotoInFirebaseAndUpdateUserPicture(Uri uri) {
+        String uuid = UUID.randomUUID().toString();
+        StorageReference mImageRef = FirebaseStorage.getInstance().getReference(uuid);
+        UploadTask uploadTask = mImageRef.putFile(uri);
+        uploadTask.continueWithTask(task -> {
+            if (!task.isSuccessful()) {
+                throw task.getException();
+            }
+            return mImageRef.getDownloadUrl();
+        }).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Uri downloadUri = task.getResult();
+                updateUserPicture(downloadUri.toString());
+            }
+        });
+    }
+
+    /** ********************************* **/
+    /** ******** DELETE Method  ******** **/
+    /** ******************************* **/
+
+    /** **** Delete restaurant in firestore  **** **/
+    public Task<Void> deleteLikedRestaurant(String restaurantId){
+        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        return getUserCollection().document(uId).collection("LikedRestaurants").document(restaurantId).delete();
+    }
 }
 

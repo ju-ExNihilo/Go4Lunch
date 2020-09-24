@@ -3,18 +3,20 @@ package fr.julien.go4lunch.listview;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.*;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import fr.juju.googlemaplibrary.model.FinalPlace;
+import fr.julien.go4lunch.MainActivity;
 import fr.julien.go4lunch.R;
 import fr.julien.go4lunch.databinding.FragmentListViewBinding;
 import fr.julien.go4lunch.details.DetailsActivity;
@@ -32,6 +34,8 @@ public class ListViewFragment extends Fragment implements AdapterRestaurant.OnRe
     private SearchView.OnQueryTextListener queryTextListener;
     private RestaurantsViewModel restaurantsViewModel;
     private UserViewModel userViewModel;
+    private NavController navController;
+    private boolean isSearching = false;
 
     public ListViewFragment() {}
 
@@ -41,7 +45,6 @@ public class ListViewFragment extends Fragment implements AdapterRestaurant.OnRe
                              Bundle savedInstanceState) {
         binding = FragmentListViewBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
     }
 
     @Override
@@ -51,6 +54,19 @@ public class ListViewFragment extends Fragment implements AdapterRestaurant.OnRe
         this.configureRestaurantsViewModel();
         this.configureUserViewModel();
         this.configureRecyclerView();
+        navController = Navigation.findNavController(view);
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (isSearching){
+                    getAllRestaurants();
+                    isSearching = false;
+                }else {
+                    navController.navigateUp();
+                }
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
     }
 
@@ -60,23 +76,23 @@ public class ListViewFragment extends Fragment implements AdapterRestaurant.OnRe
         this.getAllRestaurants();
     }
 
-    /** Configuring ViewModel **/
+    /** Configure restaurant ViewModel **/
     private void configureRestaurantsViewModel(){
-        ViewModelFactory viewModelFactory = Injection.provideRestaurantViewModelFactory(getViewLifecycleOwner());
+        ViewModelFactory viewModelFactory = Injection.provideRestaurantViewModelFactory(getViewLifecycleOwner(), getContext());
         restaurantsViewModel = new ViewModelProvider(this, viewModelFactory).get(RestaurantsViewModel.class);
     }
 
+    /** Configure user ViewModel **/
     private void configureUserViewModel(){
         ViewModelFactory viewModelFactory = Injection.provideUserViewModelFactory();
         userViewModel = new ViewModelProvider(this, viewModelFactory).get(UserViewModel.class);
-        userViewModel.init();
     }
 
     /** ***************************** **/
     /** **** Recycler view Method *** **/
     /** ***************************** **/
 
-    /** Configuring RecyclerView **/
+    /** Configure RecyclerView **/
     private void configureRecyclerView(){
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         binding.listRestaurants.setLayoutManager(layoutManager);
@@ -86,21 +102,12 @@ public class ListViewFragment extends Fragment implements AdapterRestaurant.OnRe
         restaurantsViewModel.getRestaurants().observe(getViewLifecycleOwner(), this::setAdapter);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void setAdapter(List<FinalPlace> finalPlaceList){
         if (finalPlaceList != null){
             binding.listRestaurants.setAdapter(new AdapterRestaurant(this, finalPlaceList));
         }else {
-            alertDialog("No Match","Sorry we no found any place",2);
+            alertDialog(getString(R.string.no_match),getString(R.string.sorry_dont_found_place), MainActivity.ALERT_NO_MATCH_DIALOG_ID);
         }
-
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void alertDialog(String dialogueTitle, String dialogueMessage, int id){
-        Utils utils = new Utils(this);
-        utils.showAlertDialog(getContext(), dialogueTitle,dialogueMessage,"Done", "Cancel",
-                R.drawable.background_alert_dialog, R.drawable.ic_warning_black_24dp, id);
     }
 
     @Override
@@ -131,6 +138,8 @@ public class ListViewFragment extends Fragment implements AdapterRestaurant.OnRe
                         restaurantsViewModel.getPlaceFromSearch(query, user.getLatitude()+","+user.getLongitude(), user.getRadius())
                                 .observe(getViewLifecycleOwner(), finalRestaurants -> setAdapter(finalRestaurants));
                     });
+                    searchView.clearFocus();
+                    isSearching = true;
                     return true;
                 }
             };
@@ -149,6 +158,16 @@ public class ListViewFragment extends Fragment implements AdapterRestaurant.OnRe
         }
         searchView.setOnQueryTextListener(queryTextListener);
         return super.onOptionsItemSelected(item);
+    }
+
+    /** ***************************** **/
+    /** ***** Alert Dialog Method **** **/
+    /** ***************************** **/
+
+    private void alertDialog(String dialogueTitle, String dialogueMessage, int id){
+        Utils utils = new Utils(this);
+        utils.showAlertDialog(getContext(), dialogueTitle,dialogueMessage,getString(R.string.done), getString(R.string.cancel),
+                R.drawable.background_alert_dialog, R.drawable.ic_warning_black_24dp, id);
     }
 
     @Override

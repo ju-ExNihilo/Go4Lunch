@@ -3,48 +3,76 @@
     <string name="app_no_name"/>
     <!-- FACEBOOK PURPOSE -->
     <string name="facebook_application_id" translatable="false">967246723698527</string>
-    <string name="facebook_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">
-        fb967246723698527
-    </string>
+    <string name="facebook_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">fb967246723698527</string>
+    <!-- TWITTER PURPOSE -->
+    <string name="twitter_consumer_key" translatable="false">
+        1291640725663297537-EBJzdt3Sm34Wkihwh1LE4NWnOpUS6e</string>
+    <string name="twitter_consumer_secret" translatable="false">
+        maCoJEb7KQ1FtWwqw0LkJAX7b3qfGdeAv1LjhocnfNaRr</string>
+
     <!-- Login Activity -->
     <string name="sign_in_with_facebook">Sign in with Facebook</string>
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="sign_in_with_twitter">Sign in with Twitter</string>
     <string name="sign_in_with_iden">Sign in with Login</string>
-    <string name="authentication">authentication success</string>
-    <string name="error_authentication_canceled">authentication canceled</string>
-    <string name="error_no_internet">no internet found</string>
-    <string name="error_unknown_error">unknown error</string>
-    <string name="go4lunch_icon">go4lunch icon</string>
+    <string name="authentication">Authentication success</string>
+    <string name="error_authentication_canceled">Authentication canceled</string>
+    <string name="error_no_internet">No internet found</string>
+    <string name="error_unknown_error">Unknown error</string>
     <string name="subtitle_login">Find a nice restaurant and invite your co-workers for lunch!</string>
-    <string name="title_login">Go4Lunch</string>
-    <string name="search">search</string>
+    <string name="search">Search</string>
     <string name="url_default_pic">https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png</string>
     <!-- Login Activity End -->
 
+    <!-- Chat room Activity -->
+    <string name="chat_with">Chat with :</string>
+    <string name="message">Message</string>
+    <string name="send">Send</string>
+    <!-- Chat room Activity End -->
+
     <!-- Map Activity -->
-    <string name="my_position">myPosition</string>
     <string name="opening_hours_dont_set">Opening hours dont set</string>
     <!-- Map Activity End -->
 
-    <!-- Home Activity -->
-    <string name="go_map">Go to Map View</string>
-    <string name="go_list">Go to List View</string>
-    <string name="search_hint">search_hint</string>
-    <string name="navigation_drawer_open">navigation_drawer_open</string>
-    <string name="navigation_drawer_close">navigation_drawer_close</string>
-    <!-- Home Activity End -->
+    <!-- Setting Activity -->
+    <string name="scope_updated">Your scope has been updated</string>
+    <string name="scope_dont_updated">Your scope hasn\'t been updated</string>
+    <string name="scope_between">Your scope must be between 2km and 10km</string>
+    <string name="picture_updated">Your profile picture has been updated</string>
+    <string name="update_pseudo">Update Your Pseudo</string>
+    <string name="enter_pseudo">Enter your new pseudo :</string>
+    <string name="save">Save</string>
+    <string name="pseudo">Pseudo</string>
+    <string name="update_scope">Update Your Scope</string>
+    <string name="error_scope">Update your search scope in km. Actual ( %1$d km )</string>
+    <string name="scope">Scope</string>
+    <string name="your_liked_restaurants">Your Liked Restaurants :</string>
+    <string name="pseudo_updated">Your pseudo has been updated</string>
+    <string name="pseudo_dont_updated">Your pseudo hasn\'t been updated</string>
+    <string name="setting">Setting</string>
+    <string name="update_pseudo_layout">Update pseudo</string>
+    <string name="update_search_scope_layout">Update search scope</string>
+    <string name="update_avatar_picture_layout">Update avatar picture</string>
+    <string name="my_liked_restaurants_layout">My liked restaurants</string>
+    <!-- Setting Activity End -->
+
+    <!-- List Activity -->
+    <string name="nbr_customer">(%1$d)</string>
+    <!-- List Activity End -->
 
     <!-- Details Activity -->
-    <string name="none">none</string>
     <string name="liked">LIKED</string>
+    <string name="no_body_register_yet">Nobody register yet</string>
+    <string name="call">CALL</string>
     <string name="like">LIKE</string>
+    <string name="website">WEBSITE</string>
     <!-- Details Activity End -->
 
     <!-- Easy Permissions -->
     <string name="popup_title_permission_files_access">We need permissions to access your Picture</string>
-    <string name="popup_title_permission_location_access">We need permissions to access on your current location</string>
-    <string name="toast_title_no_image_chosen">You dont choose any file</string>
+    <string name="popup_title_permission_call">We need your permission to make a phone call</string>
+    <string name="popup_title_permission_location_access">We need permissions to access to your current location</string>
+    <string name="toast_title_no_image_chosen">You don\'t choose any file</string>
 
     <!-- Alert Dialog -->
     <string name="please_connect_your_phone_to_internet">Please Connect Your Phone To Internet</string>
@@ -53,19 +81,45 @@
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
     <string name="no_match">No Match</string>
-    <string name="sorry_dont_found_place">Sorry we no found any place</string>
-    <string name="sorry_no_phone">Sorry this restaurant hasn’t added a phone number yet.</string>
-    <string name="soory_no_website">Sorry this restaurant hasn’t added a website yet.</string>
+    <string name="sorry_dont_found_place">Sorry, we no found any place</string>
+    <string name="sorry_no_phone">Sorry, this restaurant hasn’t added a phone number yet.</string>
+    <string name="sorry_no_website">Sorry, this restaurant hasn’t added a website yet.</string>
     <string name="warning">Warning !</string>
     <string name="cancel_btn">Cancel</string>
-    <string name="ok_btn">Ok</string>
+    <string name="ok_btn">OK</string>
     <string name="update_location">Update location</string>
     <string name="location_change">Your location change do you want update restaurant list ?</string>
     <string name="agree">Agree</string>
-    <string name="disagree">DisAgree</string>
-    <string name="data_dont_update">Data don\'t update</string>
-    <string name="phone_dont_set">Phone dont set</string>
-    <string name="site_sont_set">site dont set</string>
+    <string name="disagree">Disagree</string>
+    <string name="data_dont_update">Data don\'t updated</string>
+    <string name="phone_dont_set">Phone don\'t set</string>
+    <string name="site_sont_set">site don\'t set</string>
+    <string name="sorry">Sorry !</string>
+    <string name="eating_place_dont_select">You have not selected eating place yet !!</string>
+
+    <!-- Menu -->
+    <string name="map_view">Map View</string>
+    <string name="list_view">List View</string>
+    <string name="workmates">Workmates</string>
+    <string name="your_lunch">Your Lunch</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
+
+    <!-- Notification -->
+    <string name="notification_title">Don\’t forget your meal</string>
+    <string name="notification_message">Today you eat at %1$s</string>
+
+    <!-- Utils -->
     <string name="notif">notif</string>
+    <string name="none">none</string>
+    <string name="my_position">myPosition</string>
+    <string name="go4lunch_icon">Go4lunch icon</string>
+    <string name="go_map">Go to Map View</string>
+    <string name="go_list">Go to List View</string>
+    <string name="search_hint">Search</string>
+    <string name="navigation_drawer_open">navigation_drawer_open</string>
+    <string name="navigation_drawer_close">navigation_drawer_close</string>
+    <string name="is_joining">is joining</string>
+    <string name="eating_place">eating to %1$s</string>
 
 </resources>

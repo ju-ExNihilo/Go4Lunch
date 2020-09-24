@@ -1,8 +1,9 @@
 package fr.julien.go4lunch.injection;
 
+import android.content.Context;
 import androidx.lifecycle.LifecycleOwner;
 import fr.juju.googlemaplibrary.repository.GooglePlaceRepository;
-import fr.julien.go4lunch.MainActivity;
+import fr.julien.go4lunch.R;
 import fr.julien.go4lunch.factory.ViewModelFactory;
 import fr.julien.go4lunch.repository.InboxRepository;
 import fr.julien.go4lunch.repository.RestaurantsDataRepository;
@@ -11,7 +12,7 @@ import fr.julien.go4lunch.repository.UserDataRepository;
 
 public class Injection {
 
-    /** firestore **/
+
     public static UserDataRepository provideUserRepository(){return new UserDataRepository();}
 
     public static ViewModelFactory provideUserViewModelFactory(){
@@ -19,8 +20,8 @@ public class Injection {
         return new ViewModelFactory(userDataRepository);
     }
 
-    public static RestaurantsDataRepository provideRestaurantsRepository(LifecycleOwner owner){
-        GooglePlaceRepository googlePlaceRepository = new GooglePlaceRepository(owner, MainActivity.KEY_API);
+    public static RestaurantsDataRepository provideRestaurantsRepository(LifecycleOwner owner, Context context){
+        GooglePlaceRepository googlePlaceRepository = new GooglePlaceRepository(owner, context.getString(R.string.google_maps_key));
         return new RestaurantsDataRepository(googlePlaceRepository, owner);
     }
 
@@ -31,8 +32,8 @@ public class Injection {
         return new ViewModelFactory(inboxRepository);
     }
 
-    public static ViewModelFactory provideRestaurantViewModelFactory(LifecycleOwner owner){
-        RestaurantsDataRepository restaurantsDataRepository = provideRestaurantsRepository(owner);
+    public static ViewModelFactory provideRestaurantViewModelFactory(LifecycleOwner owner, Context context){
+        RestaurantsDataRepository restaurantsDataRepository = provideRestaurantsRepository(owner, context);
         return new ViewModelFactory(restaurantsDataRepository);
     }
 

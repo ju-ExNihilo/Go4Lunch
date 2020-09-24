@@ -1,37 +1,19 @@
 package fr.julien.go4lunch.worker;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Context;
-import android.os.Build;
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
-import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import fr.julien.go4lunch.R;
-import fr.julien.go4lunch.factory.ViewModelFactory;
-import fr.julien.go4lunch.injection.Injection;
 import fr.julien.go4lunch.models.User;
 import fr.julien.go4lunch.repository.UserDataRepository;
-import fr.julien.go4lunch.viewmodel.RestaurantsViewModel;
-import fr.julien.go4lunch.viewmodel.UserViewModel;
-
 
 public class ClearEatingPlaceWorker extends Worker {
 
-    public static final String KEY_CLEAR_WORKER = "KEY_CLEAR_WORKER";
-
     public ClearEatingPlaceWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
-
     }
 
     @NonNull

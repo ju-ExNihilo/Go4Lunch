@@ -1,7 +1,6 @@
 package fr.julien.go4lunch.listview;
 
 import android.location.Location;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,20 +8,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import fr.juju.googlemaplibrary.model.FinalPlace;
+import fr.julien.go4lunch.R;
 import fr.julien.go4lunch.databinding.ItemRestaurantBinding;
 import fr.julien.go4lunch.utils.Utils;
-
 import java.util.List;
 
 public class AdapterRestaurant extends RecyclerView.Adapter<AdapterRestaurant.RestaurantViewHolder> {
 
-
-
     public interface OnRestaurantItemClicked{void onClickedRestaurant(FinalPlace restaurant);}
 
-
-    private OnRestaurantItemClicked onRestaurantItemClicked;
-    private List<FinalPlace> finalPlaces;
+    private final OnRestaurantItemClicked onRestaurantItemClicked;
+    private final List<FinalPlace> finalPlaces;
 
     public AdapterRestaurant(OnRestaurantItemClicked onRestaurantItemClicked, List<FinalPlace> finalPlaces) {
         this.onRestaurantItemClicked = onRestaurantItemClicked;
@@ -52,7 +48,8 @@ public class AdapterRestaurant extends RecyclerView.Adapter<AdapterRestaurant.Re
         }else {
             holder.binding.restaurantClientNumber.setVisibility(View.VISIBLE);
             holder.binding.restaurantClientIcon.setVisibility(View.VISIBLE);
-            holder.binding.restaurantClientNumber.setText("("+ finalPlace.getNbrCustomer()+")");
+            String nbrCustomer = holder.itemView.getContext().getString(R.string.nbr_customer, finalPlace.getNbrCustomer());
+            holder.binding.restaurantClientNumber.setText(nbrCustomer);
         }
 
         holder.binding.restaurantName.setText(finalPlace.getName());
@@ -62,7 +59,7 @@ public class AdapterRestaurant extends RecyclerView.Adapter<AdapterRestaurant.Re
         if (finalPlace.getOpeningHours() != null){
             holder.binding.restaurantOpeningHours.setText(finalPlace.getOpeningHours().get(Utils.getIndexOfToday()));
         }else {
-            holder.binding.restaurantOpeningHours.setText("Opening hours dont set");
+            holder.binding.restaurantOpeningHours.setText(R.string.opening_hours_dont_set);
         }
 
         holder.binding.restaurantAddress.setText(finalPlace.getAddress());
@@ -73,8 +70,6 @@ public class AdapterRestaurant extends RecyclerView.Adapter<AdapterRestaurant.Re
     public int getItemCount() {
         return finalPlaces.size();
     }
-
-
 
     public static class RestaurantViewHolder extends RecyclerView.ViewHolder{
 

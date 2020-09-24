@@ -1,23 +1,19 @@
 package fr.julien.go4lunch.chatroom;
 
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import fr.julien.go4lunch.R;
-import fr.julien.go4lunch.databinding.ItemRestaurantBinding;
 import fr.julien.go4lunch.databinding.MessageItemBinding;
-import fr.julien.go4lunch.listview.AdapterRestaurant;
 import fr.julien.go4lunch.models.Inbox;
+import java.text.DateFormat;
 
 public class InboxAdapter extends FirestoreRecyclerAdapter<Inbox, InboxAdapter.InboxHolder> {
 
@@ -29,12 +25,10 @@ public class InboxAdapter extends FirestoreRecyclerAdapter<Inbox, InboxAdapter.I
     private final String currentUserId;
     private OnDataChange onDataChange;
 
-
     public InboxAdapter(@NonNull FirestoreRecyclerOptions<Inbox> options, String currentUserId, OnDataChange onDataChange ) {
         super(options);
         this.currentUserId = currentUserId;
         this.onDataChange = onDataChange;
-
     }
 
     @Override
@@ -43,14 +37,12 @@ public class InboxAdapter extends FirestoreRecyclerAdapter<Inbox, InboxAdapter.I
         rootView = holder.binding.activityMentorChatItemRootView;
         profileContainer = holder.binding.activityMentorChatItemProfileContainer;
         holder.binding.activityMentorChatItemMessageContainerTextMessageContainerTextView.setText(model.getMessage());
-        //holder.binding.activityMentorChatItemMessageContainerTextViewDate.setText(model.getDate().toString());
+        holder.binding.activityMentorChatItemMessageContainerTextViewDate.setText(DateFormat.getTimeInstance(DateFormat.SHORT).format(model.getDate()));
         updateDesignDependingUser(model.getFrom().equals(currentUserId));
         Glide.with(holder.binding.activityMentorChatItemProfileContainerProfileImage.getContext())
                 .load( model.getUrlPicFrom())
                 .apply(RequestOptions.circleCropTransform())
                 .into(holder.binding.activityMentorChatItemProfileContainerProfileImage);
-
-
     }
 
     private void updateDesignDependingUser(Boolean isSender){

@@ -2,15 +2,13 @@ package fr.julien.go4lunch.workmates;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
-
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import fr.julien.go4lunch.R;
 import fr.julien.go4lunch.databinding.ItemUserBinding;
 import fr.julien.go4lunch.models.User;
 
@@ -42,12 +40,6 @@ public class AdapterUser extends FirestoreRecyclerAdapter<User, AdapterUser.User
     @Override
     protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User model) {
 
-//            String urlPicUser;
-//            if (model.getUrlPicture() != null){
-//                urlPicUser = model.getUrlPicture();
-//            }else {
-//                urlPicUser = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
-//            }
             Glide.with(holder.binding.userPic.getContext())
                     .load(model.getUrlPicture())
                     .apply(RequestOptions.circleCropTransform())
@@ -57,10 +49,11 @@ public class AdapterUser extends FirestoreRecyclerAdapter<User, AdapterUser.User
             holder.binding.messageButton.setOnClickListener(v -> this.onViewClicked.onChatButtonClicked(model.getUid(), model.getUsername()));
 
             if(isFromDetails){
-                holder.binding.eatingPlace.setText("is joining");
+                holder.binding.eatingPlace.setText(R.string.is_joining);
             }else {
-                if (!model.getEatingPlaceId().equals("none")){
-                    holder.binding.eatingPlace.setText("eating to " + model.getEatingPlace());
+                String eatingPlace = holder.itemView.getContext().getString(R.string.eating_place, model.getEatingPlace());
+                if (!model.getEatingPlaceId().equals(holder.itemView.getContext().getString(R.string.none))){
+                    holder.binding.eatingPlace.setText(eatingPlace);
                     holder.itemView.setOnClickListener(v -> this.onViewClicked.onWorkmateItemClicked(model.getEatingPlaceId()));
                 }
             }
