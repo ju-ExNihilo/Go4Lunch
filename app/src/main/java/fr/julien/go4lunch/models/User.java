@@ -9,22 +9,25 @@ public class User {
     private String urlPicture;
     private String eatingPlace;
     private String eatingPlaceId;
+    private String email;
     private double longitude;
     private double latitude;
     private int radius;
 
     public User() { }
 
-    public User(String uid, String username, @Nullable String urlPicture) {
+    public User(String uid, String username, String email, @Nullable String urlPicture) {
         this.uid = uid;
         this.username = username;
+        this.email = email;
         this.urlPicture = urlPicture;
         this.eatingPlace = "none";
         this.eatingPlaceId = "none";
-        this.radius = 5000;
+        this.radius = 2000;
         this.longitude = 0;
         this.latitude = 0;
     }
+
 
     public String getUid() {
         return uid;
@@ -89,6 +92,14 @@ public class User {
 
     public void setRadius(int radius) {
         this.radius = radius;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

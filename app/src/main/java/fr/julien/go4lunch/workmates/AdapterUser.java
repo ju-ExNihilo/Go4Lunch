@@ -39,24 +39,25 @@ public class AdapterUser extends FirestoreRecyclerAdapter<User, AdapterUser.User
 
     @Override
     protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User model) {
+        holder.binding.eatingPlace.setText("");
+        holder.itemView.setOnClickListener(v->{});
 
-            Glide.with(holder.binding.userPic.getContext())
-                    .load(model.getUrlPicture())
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(holder.binding.userPic);
-            holder.binding.userName.setText(model.getUsername());
+        Glide.with(holder.binding.userPic.getContext())
+                .load(model.getUrlPicture())
+                .apply(RequestOptions.circleCropTransform())
+                .into(holder.binding.userPic);
+        holder.binding.userName.setText(model.getUsername());
+        holder.binding.messageButton.setOnClickListener(v -> this.onViewClicked.onChatButtonClicked(model.getUid(), model.getUsername()));
 
-            holder.binding.messageButton.setOnClickListener(v -> this.onViewClicked.onChatButtonClicked(model.getUid(), model.getUsername()));
-
-            if(isFromDetails){
-                holder.binding.eatingPlace.setText(R.string.is_joining);
-            }else {
+        if(isFromDetails){
+            holder.binding.eatingPlace.setText(R.string.is_joining);
+        }else {
+            if (!model.getEatingPlaceId().equals(holder.itemView.getContext().getString(R.string.none))){
                 String eatingPlace = holder.itemView.getContext().getString(R.string.eating_place, model.getEatingPlace());
-                if (!model.getEatingPlaceId().equals(holder.itemView.getContext().getString(R.string.none))){
-                    holder.binding.eatingPlace.setText(eatingPlace);
-                    holder.itemView.setOnClickListener(v -> this.onViewClicked.onWorkmateItemClicked(model.getEatingPlaceId()));
-                }
+                holder.binding.eatingPlace.setText(eatingPlace);
+                holder.itemView.setOnClickListener(v -> this.onViewClicked.onWorkmateItemClicked(model.getEatingPlaceId()));
             }
+        }
 
     }
 

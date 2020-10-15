@@ -1,5 +1,6 @@
 package fr.julien.go4lunch.repository;
 
+import androidx.lifecycle.MutableLiveData;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -8,6 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import fr.julien.go4lunch.models.Inbox;
 import java.util.Arrays;
+import java.util.List;
 
 public class InboxRepository {
 
@@ -38,5 +40,19 @@ public class InboxRepository {
     /** ******** Insert user in firebase  ****** **/
     public Task<Void> newMessage(Inbox newMessage) {
         return getInboxCollection().document().set(newMessage);
+    }
+
+
+    /** ******** Get all user for test  ****** **/
+    public MutableLiveData<List<Inbox>> getMessagesForTest(String from, String to){
+        MutableLiveData<List<Inbox>> likedRestaurants = new MutableLiveData<>();
+        getInboxCollection().whereIn("between", Arrays.asList(Arrays.asList(from, to), Arrays.asList(to, from))).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                likedRestaurants.setValue(task.getResult().toObjects(Inbox.class));
+            }else {
+                likedRestaurants.setValue(null);
+            }
+        });
+        return likedRestaurants;
     }
 }

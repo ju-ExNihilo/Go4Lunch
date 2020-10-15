@@ -29,6 +29,13 @@
     </style>
 
     <style name="AppTheme.NoActionBar">
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorControlNormal">@color/colorWhite</item>
+    </style>
+
+    <style name="AppTheme1.NoActionBar">
         <item name="colorPrimaryDark">@color/gray</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

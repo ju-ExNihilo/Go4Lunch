@@ -2,6 +2,7 @@ package fr.julien.go4lunch.viewmodel;
 
 import android.net.Uri;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import java.util.List;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;

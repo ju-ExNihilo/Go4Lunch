@@ -1,11 +1,8 @@
 package fr.julien.go4lunch.repository;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-
 import android.net.Uri;
-import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.Task;
@@ -15,8 +12,6 @@ import com.google.firebase.firestore.*;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import fr.juju.googlemaplibrary.model.FinalPlace;
-import fr.julien.go4lunch.models.Inbox;
 import fr.julien.go4lunch.models.LikedRestaurant;
 import fr.julien.go4lunch.models.User;
 
@@ -43,7 +38,7 @@ public class UserDataRepository {
 
     /** ******** Insert Liked restaurant in firebase  ****** **/
     public Task<Void> insertLikedRestaurant(LikedRestaurant likedRestaurant) {
-        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uId = getCurrentUserId();
         return getUserCollection().document(uId).collection("LikedRestaurants").document(likedRestaurant.getId()).set(likedRestaurant);
     }
 
@@ -54,6 +49,10 @@ public class UserDataRepository {
     /** ******** Get current user from firebaseAuth  ****** **/
     public FirebaseUser getCurrentUser(){
         return firebaseAuth.getCurrentUser();
+    }
+
+    public String getCurrentUserId(){
+        return  getCurrentUser().getUid();
     }
 
     /** ******** Get users after search  ****** **/
@@ -80,9 +79,50 @@ public class UserDataRepository {
                 .build();
     }
 
+    /** ******** Get all user for test  ****** **/
+    public MutableLiveData<List<User>> getCustomerForTest(String eatingPlaceId){
+        MutableLiveData<List<User>> likedRestaurants = new MutableLiveData<>();
+        getUserCollection().whereEqualTo("eatingPlaceId",eatingPlaceId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                likedRestaurants.setValue(task.getResult().toObjects(User.class));
+            }else {
+                likedRestaurants.setValue(null);
+            }
+        });
+        return likedRestaurants;
+    }
+
+    /** ******** Get all user for test  ****** **/
+    public MutableLiveData<List<User>> getAllUsersForTest(){
+
+        MutableLiveData<List<User>> likedRestaurants = new MutableLiveData<>();
+        getUserCollection().get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                likedRestaurants.setValue(task.getResult().toObjects(User.class));
+            }else {
+                likedRestaurants.setValue(null);
+            }
+        });
+        return likedRestaurants;
+    }
+
+    /** ******** Get all user for test  ****** **/
+    public MutableLiveData<List<User>> getSearchUsersForTest(String searchQuery){
+
+        MutableLiveData<List<User>> likedRestaurants = new MutableLiveData<>();
+        getUserCollection().whereGreaterThanOrEqualTo("username", searchQuery).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                likedRestaurants.setValue(task.getResult().toObjects(User.class));
+            }else {
+                likedRestaurants.setValue(null);
+            }
+        });
+        return likedRestaurants;
+    }
+
     /** ******** Get current user from firestore  ****** **/
     public MutableLiveData<User> getUserFromFirestore(){
-        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uId = getCurrentUserId();
         MutableLiveData<User> user = new MutableLiveData<>();
         getUserCollection().document(uId).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()){
@@ -94,9 +134,9 @@ public class UserDataRepository {
         return user;
     }
 
-    /** ******** Get current user from firestore  ****** **/
+    /** ******** Get Liked restaurant from firestore  ****** **/
     public MutableLiveData<List<LikedRestaurant>> getLikedRestaurants(){
-        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uId = getCurrentUserId();
         MutableLiveData<List<LikedRestaurant>> likedRestaurants = new MutableLiveData<>();
         getUserCollection().document(uId).collection("LikedRestaurants").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
@@ -110,7 +150,7 @@ public class UserDataRepository {
 
     /** **** Get restaurant by id from firestore  **** **/
     public MutableLiveData<LikedRestaurant> getLikedRestaurantById(String rId){
-        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uId = getCurrentUserId();
         MutableLiveData<LikedRestaurant> data = new MutableLiveData<>();
         getUserCollection().document(uId).collection("LikedRestaurants").document(rId).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()){
@@ -135,7 +175,7 @@ public class UserDataRepository {
     }
 
     public void updateLatLng(double longitude, double latitude ){
-        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uId = getCurrentUserId();
         this.updateLongitude(uId, longitude);
         this.updateLatitude(uId, latitude);
     }
@@ -162,13 +202,13 @@ public class UserDataRepository {
 
     /** **** Update user radius  **** **/
     public Task<Void> updateRadius(int radius) {
-        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uId = getCurrentUserId();
         return getUserCollection().document(uId).update("radius", radius);
     }
 
     /** **** Update user picture  **** **/
     private Task<Void> updateUserPicture(String urlPicture) {
-        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uId = getCurrentUserId();
         return getUserCollection().document(uId).update("urlPicture", urlPicture);
     }
 
@@ -196,8 +236,13 @@ public class UserDataRepository {
 
     /** **** Delete restaurant in firestore  **** **/
     public Task<Void> deleteLikedRestaurant(String restaurantId){
-        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uId = getCurrentUserId();
         return getUserCollection().document(uId).collection("LikedRestaurants").document(restaurantId).delete();
+    }
+
+    /** **** Delete user after test  **** **/
+    public Task<Void> deleteUser(String userId){
+        return getUserCollection().document(userId).delete();
     }
 }
 

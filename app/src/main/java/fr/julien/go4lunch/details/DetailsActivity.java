@@ -1,6 +1,5 @@
 package fr.julien.go4lunch.details;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,9 +27,6 @@ import fr.julien.go4lunch.viewmodel.RestaurantsViewModel;
 import fr.julien.go4lunch.viewmodel.UserViewModel;
 import fr.julien.go4lunch.worker.EatingPlaceNotificationWorker;
 import fr.julien.go4lunch.workmates.AdapterUser;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
-
 import java.util.concurrent.TimeUnit;
 
 public class DetailsActivity extends AppCompatActivity implements AdapterUser.OnViewClicked, Utils.OnClickButtonAlertDialog{
@@ -44,8 +40,6 @@ public class DetailsActivity extends AppCompatActivity implements AdapterUser.On
     private String restaurantId;
     private AdapterUser adapterUser;
     public static final String PARCELABLE_RESTAURANT = "PARCELABLE_RESTAURANT";
-    private static final String PERMS_CALL_PHONE = Manifest.permission.CALL_PHONE;
-    private static final int RC_CALL_PHONE_PERMS = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +96,7 @@ public class DetailsActivity extends AppCompatActivity implements AdapterUser.On
                 .load(restaurant.getPhoto())
                 .into(binding.restaurantDetailsPic);
 
-        binding.restaurantDetailsFloatingBtn.setOnClickListener(v -> this.onClickFloatingActionBtn(restaurant.getName(), restaurant.getPlaceId()));
+        binding.restaurantDetailsFloatingBtn.setOnClickListener(v -> this.onClickFloatingActionBtn(restaurant.getName(), restaurant.getPlaceId(), restaurant.getAddress()));
     }
 
     private void getIfCustomer(String eatingPlaceId){
@@ -152,7 +146,7 @@ public class DetailsActivity extends AppCompatActivity implements AdapterUser.On
     /** ******** Action Method  ********* **/
     /** ******************************** **/
 
-    private void onClickFloatingActionBtn(String eatingPlaceName, String eatingPlaceId ){
+    private void onClickFloatingActionBtn(String eatingPlaceName, String eatingPlaceId, String eatingPlaceAddress ){
         if (!isCustomer){
             Utils.rotateAnimation(binding.restaurantDetailsFloatingBtn, 360, R.drawable.ic_check_circle_black_24dp);
             isCustomer = true;
@@ -163,20 +157,25 @@ public class DetailsActivity extends AppCompatActivity implements AdapterUser.On
             isCustomer = false;
             userViewModel.updateEatingPlace(uId, getString(R.string.none), getString(R.string.none));
         }
-        this.notificationWorker(this);
+        this.notificationWorker(this, eatingPlaceName, eatingPlaceId, eatingPlaceAddress);
     }
 
     /** init worker for notification **/
-    private void notificationWorker(Context context){
-        userViewModel.getCurrentUserData().observe(this, user -> {
-            Data data = new Data.Builder().put(EatingPlaceNotificationWorker.KEY_EATING_PLACE, user.getEatingPlace()).build();
-            OneTimeWorkRequest dailyWorkRequest  = new OneTimeWorkRequest.Builder(EatingPlaceNotificationWorker.class)
-                    .setInitialDelay(utils.getMillisecondeUntilAHours(12, 0), TimeUnit.MILLISECONDS)
-                    .setInputData(data)
-                    .build();
-            WorkManager.getInstance(context).enqueueUniqueWork(getString(R.string.notif), ExistingWorkPolicy.REPLACE, dailyWorkRequest) ;
-
-        });
+    private void notificationWorker(Context context, String eatingPlaceName, String eatingPlaceId, String eatingPlaceAddress){
+        Data data = new Data.Builder()
+                .putString(EatingPlaceNotificationWorker.KEY_EATING_PLACE, eatingPlaceName)
+                .putString(EatingPlaceNotificationWorker.USER_NAME, userViewModel.getCurrentUser().getDisplayName())
+                .putString(EatingPlaceNotificationWorker.KEY_EATING_PLACE_ID, eatingPlaceId)
+                .putString(EatingPlaceNotificationWorker.KEY_EATING_PLACE_ADDRESS, eatingPlaceAddress)
+                .putString(EatingPlaceNotificationWorker.KEY_NOTIF_MESSAGE_JOIN, getString(R.string.notification_joining))
+                .putString(EatingPlaceNotificationWorker.KEY_NOTIF_TITLE, getString(R.string.notification_title))
+                .putString(EatingPlaceNotificationWorker.KEY_NOTIF_MESSAGE, getString(R.string.notification_message))
+                .build();
+        OneTimeWorkRequest dailyWorkRequest  = new OneTimeWorkRequest.Builder(EatingPlaceNotificationWorker.class)
+                .setInitialDelay(utils.getMillisecondeUntilAHours(12,0), TimeUnit.MILLISECONDS)
+                .setInputData(data)
+                .build();
+        WorkManager.getInstance(context).enqueueUniqueWork(getString(R.string.notif), ExistingWorkPolicy.REPLACE, dailyWorkRequest) ;
     }
     /** ********************************** **/
     /** ***** RecyclerView Method  ****** **/
@@ -194,7 +193,9 @@ public class DetailsActivity extends AppCompatActivity implements AdapterUser.On
 
     @Override
     public void onChatButtonClicked(String userId, String userName) {
-        ChatRoomActivity.navigate(this,userId, userName);
+        userViewModel.getCurrentUserData().observe(this, user -> {
+            ChatRoomActivity.navigate(this, userId, userName, user.getUrlPicture());
+        });
     }
 
     @Override
@@ -232,7 +233,7 @@ public class DetailsActivity extends AppCompatActivity implements AdapterUser.On
             int id = item.getItemId();
             switch (id){
                 case R.id.call_details:
-                    this.getCallPermissions();
+                    callRestaurant();
                     break;
                 case R.id.website_details:
                     this.goToWebSiteRestaurant();
@@ -259,26 +260,11 @@ public class DetailsActivity extends AppCompatActivity implements AdapterUser.On
         });
     }
 
-    @AfterPermissionGranted(RC_CALL_PHONE_PERMS)
-    public void getCallPermissions() {
-        if (!EasyPermissions.hasPermissions(this, PERMS_CALL_PHONE)) {
-            EasyPermissions.requestPermissions(this, getString(R.string.popup_title_permission_call), RC_CALL_PHONE_PERMS, PERMS_CALL_PHONE);
-            return;
-        }
-        callRestaurant();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
     private void callRestaurant(){
         restaurantsViewModel.getRestaurantById(restaurantId).observe(this, restaurant -> {
             if (!restaurant.getPhone().equals(getString(R.string.phone_dont_set))){
                 String tel = restaurant.getPhone().replace(" ", "");
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                Intent callIntent = new Intent(Intent.ACTION_DIAL);
                 callIntent.setData(Uri.parse("tel:" + tel));
                 startActivity(callIntent);
             }else {

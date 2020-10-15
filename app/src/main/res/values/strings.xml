@@ -4,11 +4,6 @@
     <!-- FACEBOOK PURPOSE -->
     <string name="facebook_application_id" translatable="false">967246723698527</string>
     <string name="facebook_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">fb967246723698527</string>
-    <!-- TWITTER PURPOSE -->
-    <string name="twitter_consumer_key" translatable="false">
-        1291640725663297537-EBJzdt3Sm34Wkihwh1LE4NWnOpUS6e</string>
-    <string name="twitter_consumer_secret" translatable="false">
-        maCoJEb7KQ1FtWwqw0LkJAX7b3qfGdeAv1LjhocnfNaRr</string>
 
     <!-- Login Activity -->
     <string name="sign_in_with_facebook">Sign in with Facebook</string>
@@ -92,8 +87,6 @@
     <string name="agree">Agree</string>
     <string name="disagree">Disagree</string>
     <string name="data_dont_update">Data don\'t updated</string>
-    <string name="phone_dont_set">Phone don\'t set</string>
-    <string name="site_sont_set">site don\'t set</string>
     <string name="sorry">Sorry !</string>
     <string name="eating_place_dont_select">You have not selected eating place yet !!</string>
 
@@ -107,7 +100,8 @@
 
     <!-- Notification -->
     <string name="notification_title">Don\’t forget your meal</string>
-    <string name="notification_message">Today you eat at %1$s</string>
+    <string name="notification_message">Today you eat at</string>
+    <string name="notification_joining">This friends join you : </string>
 
     <!-- Utils -->
     <string name="notif">notif</string>
@@ -121,5 +115,7 @@
     <string name="navigation_drawer_close">navigation_drawer_close</string>
     <string name="is_joining">is joining</string>
     <string name="eating_place">eating to %1$s</string>
+    <string name="phone_dont_set">Phone don\'t set</string>
+    <string name="site_sont_set">site don\'t set</string>
 
 </resources>

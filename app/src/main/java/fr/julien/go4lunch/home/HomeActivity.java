@@ -79,7 +79,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         ImageView pic = (ImageView) header.findViewById(R.id.header_avatar_pic);
         userViewModel.getCurrentUserData().observe(this, user -> {
             name.setText(user.getUsername());
-            email.setText(Injection.provideUserRepository().getCurrentUser().getEmail());
+            email.setText((!user.getEmail().equals("none")) ? user.getEmail() : "");
             Glide.with(pic.getContext())
                     .load(user.getUrlPicture())
                     .apply(RequestOptions.circleCropTransform())

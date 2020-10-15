@@ -166,7 +166,7 @@ public class ListViewFragment extends Fragment implements AdapterRestaurant.OnRe
 
     private void alertDialog(String dialogueTitle, String dialogueMessage, int id){
         Utils utils = new Utils(this);
-        utils.showAlertDialog(getContext(), dialogueTitle,dialogueMessage,getString(R.string.done), getString(R.string.cancel),
+        utils.showAlertDialog(getContext(), dialogueTitle,dialogueMessage,getString(R.string.ok_btn), getString(R.string.cancel),
                 R.drawable.background_alert_dialog, R.drawable.ic_warning_black_24dp, id);
     }
 

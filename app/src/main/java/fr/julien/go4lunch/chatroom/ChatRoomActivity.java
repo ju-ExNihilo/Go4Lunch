@@ -31,6 +31,7 @@ public class ChatRoomActivity extends AppCompatActivity implements InboxAdapter.
     private String currentUPicUrl;
     public static final String EXTRA_USER_ID = "userId";
     public static final String EXTRA_USER_NAME = "userName";
+    public static final String EXTRA_USER_PIC = "userPic";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +42,10 @@ public class ChatRoomActivity extends AppCompatActivity implements InboxAdapter.
         Intent intent = this.getIntent();
         userId = intent.getStringExtra(EXTRA_USER_ID);
         userName = intent.getStringExtra(EXTRA_USER_NAME);
+        currentUPicUrl = intent.getStringExtra(EXTRA_USER_PIC);
         this.configureToolbar();
         this.configureViewModel();
         currentUserId = inboxViewModel.getCurrentUserId();
-        currentUPicUrl = inboxViewModel.getCurrentUserUrlPic();
         this.configureRecyclerView();
 
         binding.sendBtn.setOnClickListener(v -> {
@@ -82,6 +83,7 @@ public class ChatRoomActivity extends AppCompatActivity implements InboxAdapter.
         inboxViewModel = new ViewModelProvider(this, viewModelFactory).get(InboxViewModel.class);
     }
 
+
     /** Configure RecyclerView **/
     private void configureRecyclerView(){
         binding.inboxRecyclerView.setHasFixedSize(true);
@@ -109,10 +111,11 @@ public class ChatRoomActivity extends AppCompatActivity implements InboxAdapter.
     }
 
     /** Used to navigate to this activity **/
-    public static void navigate(FragmentActivity activity, String userId, String userName) {
+    public static void navigate(FragmentActivity activity, String userId, String userName, String userPic) {
         Intent intent = new Intent(activity, ChatRoomActivity.class);
         intent.putExtra(EXTRA_USER_ID, userId);
         intent.putExtra(EXTRA_USER_NAME, userName);
+        intent.putExtra(EXTRA_USER_PIC, userPic);
         ActivityCompat.startActivity(activity, intent, null);
     }
 }

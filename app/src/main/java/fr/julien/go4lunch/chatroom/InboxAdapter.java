@@ -23,7 +23,7 @@ public class InboxAdapter extends FirestoreRecyclerAdapter<Inbox, InboxAdapter.I
     private RelativeLayout rootView;
     private RelativeLayout messageContainer;
     private final String currentUserId;
-    private OnDataChange onDataChange;
+    private final OnDataChange onDataChange;
 
     public InboxAdapter(@NonNull FirestoreRecyclerOptions<Inbox> options, String currentUserId, OnDataChange onDataChange ) {
         super(options);
@@ -69,10 +69,10 @@ public class InboxAdapter extends FirestoreRecyclerAdapter<Inbox, InboxAdapter.I
     @NonNull
     @Override
     public InboxHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new InboxAdapter.InboxHolder(MessageItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        return new InboxHolder(MessageItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
-    public class InboxHolder extends RecyclerView.ViewHolder {
+    public static class InboxHolder extends RecyclerView.ViewHolder {
 
         MessageItemBinding binding;
 

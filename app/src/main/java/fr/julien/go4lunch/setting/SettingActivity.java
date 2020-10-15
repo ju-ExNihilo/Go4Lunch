@@ -35,6 +35,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class SettingActivity extends AppCompatActivity implements Utils.OnClickButtonInpuDialog, Utils.OnClickItemListAlertDialog, Utils.OnClickButtonAlertDialog{
 
     private ActivitySettingBinding binding;
+
     private UserViewModel userViewModel;
     private RestaurantsViewModel restaurantsViewModel;
     private Utils utils;

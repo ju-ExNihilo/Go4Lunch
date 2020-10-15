@@ -95,27 +95,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_view2"
                 tools:ignore="RtlSymmetry" />
 
-        <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/twitter_button"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/button_height"
-                android:layout_marginStart="@dimen/margin_login_button"
-                android:layout_marginTop="@dimen/button_margin_top"
-                android:layout_marginEnd="@dimen/margin_login_button"
-                android:background="@drawable/button_login_twitter"
-                android:drawableStart="@drawable/twitter"
-                android:drawablePadding="-40dp"
-                android:paddingStart="20dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="@string/sign_in_with_twitter"
-                android:textSize="@dimen/button_text_size"
-                android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/facebook_button"
-                tools:ignore="RtlSymmetry" />
+
 
         <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/iden_button"
@@ -136,7 +116,7 @@
                 android:textColor="@color/colorWhite"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/twitter_button"
+                app:layout_constraintTop_toBottomOf="@+id/facebook_button"
                 tools:ignore="RtlSymmetry" />
 
         <androidx.appcompat.widget.AppCompatButton

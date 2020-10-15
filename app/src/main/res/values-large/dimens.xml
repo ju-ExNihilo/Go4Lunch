@@ -9,7 +9,7 @@
     <dimen name="text_view1_size">105sp</dimen>
     <dimen name="text_view2_size">20sp</dimen>
     <dimen name="button_height">85dp</dimen>
-    <dimen name="button_group_margin_top">90dp</dimen>
+    <dimen name="button_group_margin_top">120dp</dimen>
     <dimen name="button_text_size">20sp</dimen>
     <dimen name="button_margin_top">15dp</dimen>
     <!-- Login Activity End -->

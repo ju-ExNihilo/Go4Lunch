@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.lifecycle.ViewModelProvider;
 import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,7 +26,6 @@ import fr.julien.go4lunch.models.User;
 import fr.julien.go4lunch.networking.ConnexionInternet;
 import fr.julien.go4lunch.utils.Utils;
 import fr.julien.go4lunch.viewmodel.UserViewModel;
-
 import java.io.IOException;
 import java.util.Collections;
 
@@ -55,7 +53,6 @@ public class LoginFragment extends Fragment implements Utils.OnClickButtonAlertD
         this.onClickFacebookLoginButton();
         this.onClickGoogleLoginButton();
         this.onClickMailLoginButton();
-        this.onClickTwitterLoginButton();
     }
 
     @Override
@@ -117,10 +114,6 @@ public class LoginFragment extends Fragment implements Utils.OnClickButtonAlertD
     public void onClickFacebookLoginButton() {
         binding.facebookButton.setOnClickListener(v -> startSignInActivity(new AuthUI.IdpConfig.FacebookBuilder().build()) );
     }
-    /** Login with Twitter **/
-    public void onClickTwitterLoginButton() {
-        binding.twitterButton.setOnClickListener(v -> startSignInActivity(new AuthUI.IdpConfig.TwitterBuilder().build()) );
-    }
     /** Login with Mail **/
     public void onClickMailLoginButton() {
         binding.idenButton.setOnClickListener(v -> startSignInActivity(new AuthUI.IdpConfig.EmailBuilder().build()) );
@@ -131,8 +124,7 @@ public class LoginFragment extends Fragment implements Utils.OnClickButtonAlertD
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
-                        .setAvailableProviders(
-                                Collections.singletonList(authUI))
+                        .setAvailableProviders(Collections.singletonList(authUI))
                         .setIsSmartLockEnabled(false, true)
                         .build(),
                 RC_SIGN_IN);
@@ -144,7 +136,8 @@ public class LoginFragment extends Fragment implements Utils.OnClickButtonAlertD
             String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : getString(R.string.url_default_pic);
             String username = this.getCurrentUser().getDisplayName();
             String uid = this.getCurrentUser().getUid();
-            User userToCreate = new User(uid,username, urlPicture);
+            String email = (this.getCurrentUser().getEmail() != null) ? this.getCurrentUser().getEmail() : "none";
+            User userToCreate = new User(uid,username,email, urlPicture);
             userViewModel.getCurrentUserData().observe(getViewLifecycleOwner(), user -> {
                 if (user == null){
                     userViewModel.createUser(userToCreate);

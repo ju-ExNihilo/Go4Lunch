@@ -4,28 +4,15 @@ import android.Manifest;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.res.XmlResourceParser;
-import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.*;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.*;
@@ -38,17 +25,13 @@ import fr.julien.go4lunch.R;
 import fr.julien.go4lunch.databinding.FragmentMapViewBinding;
 import fr.julien.go4lunch.details.DetailsActivity;
 import fr.julien.go4lunch.factory.ViewModelFactory;
-import fr.julien.go4lunch.home.HomeActivity;
 import fr.julien.go4lunch.injection.Injection;
-import fr.julien.go4lunch.models.LikedRestaurant;
 import fr.julien.go4lunch.networking.ConnexionInternet;
-import fr.julien.go4lunch.utils.LikedRestaurantAdapter;
 import fr.julien.go4lunch.utils.Utils;
 import fr.julien.go4lunch.viewmodel.RestaurantsViewModel;
 import fr.julien.go4lunch.viewmodel.UserViewModel;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -65,7 +48,7 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnInfoWindowC
     private double longitude, latitude;
     private RestaurantsViewModel restaurantsViewModel;
     private UserViewModel userViewModel;
-    private String uName, location;
+    private String  location;
     private float[] results = new float[1];
     private int distance, radius;
     private Utils utils;
@@ -89,7 +72,6 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnInfoWindowC
         setHasOptionsMenu(true);
         this.configureUserViewModel();
         this.configureRestaurantsViewModel();
-        uName = userViewModel.getCurrentUser().getDisplayName();
         client = LocationServices.getFusedLocationProviderClient(getActivity());
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         utils = new Utils(this);
@@ -143,7 +125,8 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnInfoWindowC
                             });
                     userViewModel.updateUserLatLn(longitude, latitude);
                 }else {
-                    alertDialog(getString(R.string.connexion_required),getString(R.string.please_connect), MainActivity.ALERT_CONNEXION_DIALOG_ID);
+                    alertDialog(getString(R.string.connexion_required),getString(R.string.please_connect),getString(R.string.done),getString(R.string.cancel),
+                            MainActivity.ALERT_CONNEXION_DIALOG_ID);
                 }
             } catch (InterruptedException | IOException e) {e.printStackTrace();}
 
@@ -166,10 +149,11 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnInfoWindowC
         mMap.clear();
         Marker myPosition = mMap.addMarker(new MarkerOptions()
                 .position(latLng)
-                .title(uName)
+                .title(userViewModel.getCurrentUser().getDisplayName())
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.my_location)));
         myPosition.setTag(getString(R.string.my_position));
     }
+
 
     /** Get Restaurants from Firestore and add Marker **/
     private void setMarkerOnMap(List<FinalPlace> finalPlaces){
@@ -197,7 +181,8 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnInfoWindowC
 
             }
         }else {
-            alertDialog(getString(R.string.no_match),getString(R.string.sorry_dont_found_place),MainActivity.ALERT_NO_MATCH_DIALOG_ID);
+            alertDialog(getString(R.string.no_match),getString(R.string.sorry_dont_found_place),getString(R.string.ok_btn),getString(R.string.cancel),
+                    MainActivity.ALERT_NO_MATCH_DIALOG_ID);
         }
     }
 
@@ -244,7 +229,7 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnInfoWindowC
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setTrafficEnabled(true);
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(),  R.raw.style_json));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,14));
         mMap.setOnInfoWindowClickListener(this);
     }
 
@@ -305,8 +290,8 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnInfoWindowC
     /** ***** Alert Dialog Method **** **/
     /** ***************************** **/
 
-    private void alertDialog(String dialogueTitle, String dialogueMessage, int id){
-        utils.showAlertDialog(getContext(), dialogueTitle,dialogueMessage,getString(R.string.done), getString(R.string.cancel),
+    private void alertDialog(String dialogueTitle, String dialogueMessage,String positiveButton, String NegativeButton, int id){
+        utils.showAlertDialog(getContext(), dialogueTitle,dialogueMessage,positiveButton, NegativeButton,
                 R.drawable.background_alert_dialog, R.drawable.ic_warning_black_24dp, id);
     }
 
@@ -325,7 +310,8 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnInfoWindowC
                         restaurantsViewModel.updateRestaurants(location, radius).observe(getViewLifecycleOwner(), this::setMarkerOnMap);
                         userViewModel.updateUserLatLn(longitude, latitude);
                     }else {
-                        alertDialog(getString(R.string.connexion_required),getString(R.string.please_connect),MainActivity.ALERT_CONNEXION_DIALOG_ID);
+                        alertDialog(getString(R.string.connexion_required),getString(R.string.please_connect),getString(R.string.done),getString(R.string.cancel),
+                                MainActivity.ALERT_CONNEXION_DIALOG_ID);
                     }
                 } catch (InterruptedException | IOException e) {
                     e.printStackTrace();

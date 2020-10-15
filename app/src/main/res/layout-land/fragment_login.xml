@@ -96,24 +96,6 @@
                     tools:ignore="RtlSymmetry" />
 
 
-            <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/twitter_button"
-                    android:layout_width="@dimen/button_width_land"
-                    android:layout_height="@dimen/button_height_land"
-                    android:layout_marginStart="@dimen/margin_login_button"
-                    android:layout_marginTop="@dimen/button_margin_top_land"
-                    android:layout_marginEnd="@dimen/margin_login_button"
-                    android:background="@drawable/button_login_twitter"
-                    android:drawableStart="@drawable/twitter"
-                    android:drawablePadding="-40dp"
-                    android:paddingStart="20dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:text="@string/sign_in_with_twitter"
-                    android:textSize="@dimen/button_text_size_land"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorWhite"
-                    tools:ignore="RtlSymmetry" />
 
             <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/iden_button"

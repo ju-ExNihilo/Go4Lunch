@@ -1,6 +1,5 @@
 package fr.julien.go4lunch.repository;
 
-import android.util.Log;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import com.google.android.gms.tasks.Task;
@@ -11,13 +10,11 @@ import fr.juju.googlemaplibrary.model.FinalPlace;
 import fr.juju.googlemaplibrary.repository.GooglePlaceRepository;
 import java.util.List;
 
-
 public class RestaurantsDataRepository {
 
     private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private final MutableLiveData<List<FinalPlace>> restaurants = new MutableLiveData<>();
     private final GooglePlaceRepository googlePlaceRepository;
-    private final String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private final String COLLECTION_USER = "users";
     private final String COLLECTION_RESTAURANT = "MyResto";
     private final String NEARBYSEARCH_TYPE = "restaurant";
@@ -34,6 +31,7 @@ public class RestaurantsDataRepository {
     }
 
     private CollectionReference getMyRestaurantsCollection(){
+        String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         return FirebaseFirestore.getInstance().collection(COLLECTION_USER).document(uId).collection(COLLECTION_RESTAURANT);
     }
 

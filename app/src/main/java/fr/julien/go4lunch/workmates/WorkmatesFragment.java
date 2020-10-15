@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import fr.julien.go4lunch.R;
 import fr.julien.go4lunch.chatroom.ChatRoomActivity;
@@ -53,6 +52,7 @@ public class WorkmatesFragment extends Fragment implements  AdapterUser.OnViewCl
             @Override
             public void handleOnBackPressed() {
                if (isSearching){
+                   binding.listUsers.setLayoutManager(new LinearLayoutManager(getContext()));
                    adapterUser.updateOptions(userViewModel.getAllUser());
                    isSearching = false;
                }else {
@@ -63,6 +63,17 @@ public class WorkmatesFragment extends Fragment implements  AdapterUser.OnViewCl
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapterUser.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapterUser.stopListening();
+    }
 
     /** Configure user ViewModel **/
     private void configureUserViewModel(){
@@ -83,20 +94,8 @@ public class WorkmatesFragment extends Fragment implements  AdapterUser.OnViewCl
 
     private void getSearchUsers(String query){
         adapterUser.updateOptions(userViewModel.getSearchUser(query));
-
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        adapterUser.startListening();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        adapterUser.stopListening();
-    }
 
     @Override
     public void onWorkmateItemClicked(String restaurantId) {
@@ -105,7 +104,10 @@ public class WorkmatesFragment extends Fragment implements  AdapterUser.OnViewCl
 
     @Override
     public void onChatButtonClicked(String userId, String userName) {
-        ChatRoomActivity.navigate(this.getActivity(),userId, userName);
+        userViewModel.getCurrentUserData().observe(getViewLifecycleOwner(), user -> {
+            ChatRoomActivity.navigate(getActivity(),userId, userName, user.getUrlPicture());
+        });
+
     }
 
     @Override
