@@ -62,7 +62,6 @@ public class DetailsActivity extends AppCompatActivity implements AdapterUser.On
                 }else {
                     restaurantsViewModel.getPlaceDetailsInfoFromApi(restaurantId).observe(this, this::initView);
                 }
-
             });
         }
     }
@@ -151,7 +150,6 @@ public class DetailsActivity extends AppCompatActivity implements AdapterUser.On
             Utils.rotateAnimation(binding.restaurantDetailsFloatingBtn, 360, R.drawable.ic_check_circle_black_24dp);
             isCustomer = true;
             userViewModel.updateEatingPlace(uId, eatingPlaceName, eatingPlaceId);
-
         }else {
             Utils.rotateAnimation(binding.restaurantDetailsFloatingBtn, 360, R.drawable.baseline_restaurant_24);
             isCustomer = false;
@@ -221,7 +219,6 @@ public class DetailsActivity extends AppCompatActivity implements AdapterUser.On
             binding.nobodyImage.setVisibility(View.GONE);
             binding.restaurantDetailsRecyclerView.setVisibility(View.VISIBLE);
         }
-
     }
 
     /** ********************************** **/

@@ -23,7 +23,7 @@ public class EatingPlaceNotificationWorker extends Worker {
     public static final String KEY_NOTIF_MESSAGE = "KEY_NOTIF_MESSAGE";
     public static final String KEY_NOTIF_MESSAGE_JOIN = "KEY_NOTIF_MESSAGE_JOIN";
     public static final String USER_NAME = "USER_NAME";
-    private Context context;
+    private final Context context;
 
     public EatingPlaceNotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -56,18 +56,15 @@ public class EatingPlaceNotificationWorker extends Worker {
                     }else {
                         displayNotification(title, message + " " + eatingPlace + "\n" + eatingPlaceAddress);
                     }
-
                 }
             });
 
-            eatingPlaceWorker(context);
+            cleanEatingPlaceWorker(context);
         }
-
         return Result.success();
     }
 
     private void displayNotification(String task, String desc) {
-
         NotificationManager manager =
                 (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -83,11 +80,9 @@ public class EatingPlaceNotificationWorker extends Worker {
                 .setSmallIcon(R.mipmap.ic_launcher);
 
         manager.notify(1, builder.build());
-
     }
 
-
-    private void eatingPlaceWorker(Context context){
+    private void cleanEatingPlaceWorker(Context context){
         OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(ClearEatingPlaceWorker.class)
                 .setInitialDelay(10, TimeUnit.HOURS)
                 .build();

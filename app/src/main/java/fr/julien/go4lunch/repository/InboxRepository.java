@@ -37,13 +37,13 @@ public class InboxRepository {
         return firebaseAuth.getCurrentUser().getPhotoUrl().toString();
     }
 
-    /** ******** Insert user in firebase  ****** **/
+    /** ******** Insert message in firestore  ****** **/
     public Task<Void> newMessage(Inbox newMessage) {
         return getInboxCollection().document().set(newMessage);
     }
 
 
-    /** ******** Get all user for test  ****** **/
+    /** ******** Get all message for test  ****** **/
     public MutableLiveData<List<Inbox>> getMessagesForTest(String from, String to){
         MutableLiveData<List<Inbox>> likedRestaurants = new MutableLiveData<>();
         getInboxCollection().whereIn("between", Arrays.asList(Arrays.asList(from, to), Arrays.asList(to, from))).get().addOnCompleteListener(task -> {

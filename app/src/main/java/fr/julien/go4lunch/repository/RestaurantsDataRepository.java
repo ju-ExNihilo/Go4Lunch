@@ -68,8 +68,7 @@ public class RestaurantsDataRepository {
                 List<FinalPlace> finalRestaurantsGetPlaces = task.getResult().toObjects(FinalPlace.class);
                 for (FinalPlace finalPlaceGetRestaurants : finalRestaurantsGetPlaces){
                     int n = finalRestaurantsGetPlaces.size();
-                    firebaseFirestore.collection(COLLECTION_USER)
-                            .whereEqualTo(EATING_PLACE_ID, finalPlaceGetRestaurants.getPlaceId()).get()
+                    firebaseFirestore.collection(COLLECTION_USER).whereEqualTo(EATING_PLACE_ID, finalPlaceGetRestaurants.getPlaceId()).get()
                             .addOnSuccessListener(queryDocumentSnapshots -> {
                                 updateNbrCustomer(finalPlaceGetRestaurants.getPlaceId(), queryDocumentSnapshots.size());
                                 finalPlaceGetRestaurants.setNbrCustomer(queryDocumentSnapshots.size());
@@ -80,7 +79,8 @@ public class RestaurantsDataRepository {
                             });
                 }
             }else {
-                data.setValue(null);}
+                data.setValue(null);
+            }
         });
         return data;
     }
@@ -96,12 +96,9 @@ public class RestaurantsDataRepository {
             }else {
                 data.setValue(null);
             }
-
         });
-
         return data;
     }
-
 
     /** **** Get restaurant by id from firestore  **** **/
     public MutableLiveData<FinalPlace> getRestaurantById(String rId){
@@ -129,7 +126,6 @@ public class RestaurantsDataRepository {
             }else {
                 data.setValue(null);
             }
-
         });
         return data;
     }
@@ -144,7 +140,6 @@ public class RestaurantsDataRepository {
             }else {
                 data.setValue(null);
             }
-
         });
         return data;
     }
@@ -197,9 +192,7 @@ public class RestaurantsDataRepository {
                             }else {
                                 data.setValue(null);
                             }
-
                         });
-
                     }
                 }
             }
@@ -213,8 +206,7 @@ public class RestaurantsDataRepository {
 
     private void insertFinalPlace(MutableLiveData<List<FinalPlace>> listMutableLiveData, List<FinalPlace> finalPlaces, int n, int[] c) {
         for (FinalPlace finalPlace : finalPlaces) {
-            firebaseFirestore.collection(COLLECTION_USER)
-                    .whereEqualTo(EATING_PLACE_ID, finalPlace.getPlaceId()).get()
+            firebaseFirestore.collection(COLLECTION_USER).whereEqualTo(EATING_PLACE_ID, finalPlace.getPlaceId()).get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
                         finalPlace.setNbrCustomer(queryDocumentSnapshots.size());
                         createRestaurant(finalPlace);
