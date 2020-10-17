@@ -1,7 +1,9 @@
 package fr.julien.go4lunch.workmates;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
@@ -10,6 +12,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import fr.julien.go4lunch.R;
 import fr.julien.go4lunch.databinding.ItemUserBinding;
+import fr.julien.go4lunch.injection.Injection;
 import fr.julien.go4lunch.models.User;
 
 public class AdapterUser extends FirestoreRecyclerAdapter<User, AdapterUser.UserViewHolder> {
@@ -39,26 +42,32 @@ public class AdapterUser extends FirestoreRecyclerAdapter<User, AdapterUser.User
 
     @Override
     protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User model) {
-        holder.binding.eatingPlace.setText("");
-        holder.itemView.setOnClickListener(v->{});
 
-        Glide.with(holder.binding.userPic.getContext())
-                .load(model.getUrlPicture())
-                .apply(RequestOptions.circleCropTransform())
-                .into(holder.binding.userPic);
-        holder.binding.userName.setText(model.getUsername());
-        holder.binding.messageButton.setOnClickListener(v -> this.onViewClicked.onChatButtonClicked(model.getUid(), model.getUsername()));
-
-        if(isFromDetails){
-            holder.binding.eatingPlace.setText(R.string.is_joining);
+        if (model.getUid().equals(Injection.provideUserRepository().getCurrentUser().getUid()) && !isFromDetails){
+            RecyclerView.LayoutParams param = (RecyclerView.LayoutParams)holder.itemView.getLayoutParams();
+            param.height = 0;
+            param.width = LinearLayout.LayoutParams.MATCH_PARENT;
+            holder.itemView.setVisibility(View.VISIBLE);
         }else {
-            if (!model.getEatingPlaceId().equals(holder.itemView.getContext().getString(R.string.none))){
-                String eatingPlace = holder.itemView.getContext().getString(R.string.eating_place, model.getEatingPlace());
-                holder.binding.eatingPlace.setText(eatingPlace);
-                holder.itemView.setOnClickListener(v -> this.onViewClicked.onWorkmateItemClicked(model.getEatingPlaceId()));
+            holder.binding.eatingPlace.setText("");
+            holder.itemView.setOnClickListener(v->{});
+            Glide.with(holder.binding.userPic.getContext())
+                    .load(model.getUrlPicture())
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(holder.binding.userPic);
+            holder.binding.userName.setText(model.getUsername());
+            holder.binding.messageButton.setOnClickListener(v -> this.onViewClicked.onChatButtonClicked(model.getUid(), model.getUsername()));
+
+            if(isFromDetails){
+                holder.binding.eatingPlace.setText(R.string.is_joining);
+            }else {
+                if (!model.getEatingPlaceId().equals(holder.itemView.getContext().getString(R.string.none))){
+                    String eatingPlace = holder.itemView.getContext().getString(R.string.eating_place, model.getEatingPlace());
+                    holder.binding.eatingPlace.setText(eatingPlace);
+                    holder.itemView.setOnClickListener(v -> this.onViewClicked.onWorkmateItemClicked(model.getEatingPlaceId()));
+                }
             }
         }
-
     }
 
     @Override
